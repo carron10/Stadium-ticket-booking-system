@@ -1,0 +1,169 @@
+<script type="text/javascript">
+    var data = {};
+    function get_component_by_xpath(path, context) {
+        return document.evaluate(path, context, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue;
+    }
+    function getCurrentOpenChat() {
+        var user_name = get_component_by_xpath("/html/body/div[1]/div/div[2]/div[4]/div/header/div[2]", document).getElementsByClassName("_6u0RM");
+
+        var user_profile = get_component_by_xpath("/html/body/div[1]/div/div[2]/div[4]/div/header/div[1]/div/img", document);
+
+        if ((user_name !== null && user_name !== undefined) && (user_profile !== null && user_profile !== undefined)) {
+            return   {window: get_component_by_xpath("/html/body/div[1]/div/div[2]/div[4]", document), user: user_name[0].innerText};
+        }
+        return null;
+    }
+
+    function getMessageAttachment(msg) {
+
+    }
+    function getPlainMessage(msg) {
+        if (msg.querySelector("._21Ahp") === null) {
+            return null;
+        }
+        var text =  msg.querySelector("._21Ahp [dir='ltr'] span").innerHTML;
+        msg.querySelector("._21Ahp [dir='ltr'] span").innerHTML.match(/<img [^>]*alt="[^"]*"[^>]*>/gm)
+                .map(x => {
+                    var f = x.replace(/.*alt="([^"]*)".*/, '$1');
+                    text = text.replace(x, f);
+                });
+        return text;
+    }
+    function checkLastMessageFromOpenedChat() {
+        var chat = getCurrentOpenChat(), new_msg = null;
+        if (chat !== null) {
+            var chat_container = get_component_by_xpath("/html/body/div[1]/div/div[2]/div[4]/div/div[2]/div/div[2]", chat.window);
+            chat_container.scrollTo(0, chat_container.scrollHeight);
+            var msg_container = chat_container.querySelector("[role='application']");
+            var msgs = msg_container.querySelectorAll("[role='row']");
+            return msgs[msgs.length - 1];
+        }
+        return new_msg;
+    }
+    var chats_container, chats;
+    function isChatPinned(chat) {
+        var unread_element = chat.querySelector("._2H6nH span");
+        if (unread_element !== null) {
+            if (unread_element.getAttribute("data-icon") !== null && unread_element.getAttribute("data-icon") === "pinned2") {
+                return true;
+            }
+        }
+        return false;
+    }
+    function getUserForPinnedChats() {
+        chats_container.scrollTo(0, 0);
+        var pinned = [];
+        chats_container = chats_container === undefined ? get_component_by_xpath("/html/body/div[1]/div/div[2]/div[3]/div/div[2]", document) : chats_container;
+        chats = chats === undefined ? chats_container.getElementsByClassName("rx9719la") : chats;
+        for (let i = 0; i < chats.length; i++) {
+            if (isChatPinned(chats[i])) {
+                var user_name = chats[i].querySelector("._21S-L span").innerText, unread = 0;
+                pinned.push(user_name);
+            }
+        }
+        return pinned;
+    }
+    function getPinnedChats() {
+        chats_container.scrollTo(0, 0);
+        var pinned = [];
+        chats_container = chats_container === undefined ? get_component_by_xpath("/html/body/div[1]/div/div[2]/div[3]/div/div[2]", document) : chats_container;
+        chats = chats === undefined ? chats_container.getElementsByClassName("rx9719la") : chats;
+        for (let i = 0; i < chats.length; i++) {
+            if (isChatPinned(chats[i])) {
+                pinned.push(chats[i]);
+            }
+        }
+        return pinned;
+    }
+//Set users that are on top
+    var users_on_top = [];
+    function init() {
+
+        chats_container = get_component_by_xpath("/html/body/div[1]/div/div[2]/div[3]/div/div[2]", document);
+        chats_container.scrollTo(0, 91 * 6);
+        setTimeout(5000);
+        chats = chats_container.getElementsByClassName("rx9719la");
+        chats_container.scrollTo(0, 0);
+        for (let i = 0; i < chats.length; i++) {
+            var user_name = chats[i].querySelector("._21S-L span").innerText, unread = 0;
+            var unread_element = chats[i].querySelector("._2H6nH span");
+            if (unread_element !== null) {
+                if (isChatPinned(chats[i])) {
+                    var elements = chats[i].querySelectorAll("._2H6nH span");
+                    for (var j = 0; j < elements.length; j++) {
+                        if (!(elements[j].getAttribute("data-icon") !== null && elements[j].getAttribute("data-icon") === "pinned2")) {
+                            unread = elements[j].innerText === "" ? 0 : Number(elements[j].innerText);
+                            break;
+                        }
+                    }
+                } else {
+                    unread = unread_element.innerText === "" ? 0 : Number(unread_element.innerText);
+                }
+            }
+            users_on_top.push({user: user_name, unread: unread});
+        }
+    }
+    function checkNewChats() {
+        chats_container.scrollTo(0, 0);
+        var new_users = {users: [], chats: []}, new_copy = [];
+        for (let i = 0; i < chats.length; i++) {
+            var uname = chats[i].querySelector("._21S-L span").innerText, unread = 0, found = false, unread_element = chats[i].querySelector("._2H6nH span");
+            if (unread_element !== null) {
+                if (isChatPinned(chats[i])) {
+                    var elements = chats[i].querySelectorAll("._2H6nH span");
+                    for (var j = 0; j < elements.length; j++) {
+                        if (!(elements[j].getAttribute("data-icon") !== null && elements[j].getAttribute("data-icon") === "pinned2")) {
+                            unread = elements[j].innerText === "" ? 0 : Number(elements[j].innerText);
+                            break;
+                        }
+                    }
+                } else {
+                    unread = unread_element.innerText === "" ? 0 : Number(unread_element.innerText);
+                }
+
+            }
+            new_copy.push({user: uname, unread: unread});
+            var nn = 0;
+            for (var ii = 0; ii < users_on_top.length; ii++) {
+                if (users_on_top[ii].user === uname) {
+                    found = true;
+                    nn = users_on_top[ii].unread;
+                    break;
+                }
+            }
+            if (found) {
+                if (nn !== unread) {
+                    if (!new_users.users.includes(uname)) {
+                        if (unread !== 0) {
+                            console.log("Unread changed from ", nn, " to ", unread);
+                            new_users.users.push(uname);
+                            new_users.chats.push(chats[i]);
+                        }
+                    }
+                }
+            } else {
+                if (!new_users.users.includes(uname)) {
+                    console.log("New user", uname);
+                    new_users.users.push(uname);
+                    new_users.chats.push(chats[i]);
+                }
+            }
+        }
+        users_on_top = new_copy;
+        return new_users;
+    }
+    init();
+    setInterval(function () {
+        var new_chats = checkNewChats();
+        if (new_chats.chats.length > 0) {
+            console.log(new_chats);
+            for(var i=0;i<new_chats.chats.length;i++){
+                new_chats.chats[i].querySelector("[title='"+new_chats.users[i]+"']").click();
+                setTimeout(2000);
+                console.log("New msg from:",new_chats.users[i],getPlainMessage(checkLastMessageFromOpenedChat()));
+            }
+            
+        }
+    }, 500);
+
+</script> 
