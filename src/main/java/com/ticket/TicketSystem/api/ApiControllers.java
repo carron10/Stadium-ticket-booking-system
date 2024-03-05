@@ -16,6 +16,7 @@ import com.ticket.TicketSystem.repositories.OrderRepository;
 import com.ticket.TicketSystem.repositories.TicketRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,7 +64,7 @@ public class ApiControllers{
     
      @GetMapping("/qr")
     @ResponseBody
-    public ResponseEntity<byte[]> getQR() throws WriterException {
+    public ResponseEntity<byte[]> getQR() throws WriterException, IOException {
         byte[] qrCodeBytes=QRCodeGenerator.generateQRCode("hello world", 250, 250);
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(qrCodeBytes);
     }
