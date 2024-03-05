@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>TODO supply a title</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- <link rel="stylesheet" href="css/bootstrap.css" /> -->
+  <style>
+    .container {
+      width: 100%;
+      padding-right: 15px;
+      padding-left: 15px;
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+
+    .bg-secondary2 {
+      background-color: #f1f1f1;
+    }
+
+    .line {
+      height: 4px;
+      width: 100px;
+      border-width: 0;
+      color: red;
+      background-color: red;
+    }
+
+    .l-2 {
+      height: 2px;
+      width: 100px;
+      border-width: 0;
+      color: red;
+      background-color: red;
+
+    }
+
+    .coloured {
+      color: #e712bc;
+    }
+
+    .pt-2,
+    .py-2 {
+      padding-top: 8px !important;
+    }
+
+    .pt-3,
+    .py-3 {
+      padding-top: 16px !important;
+    }
+
+    .pt-5,
+    .py-5 {
+      padding-top: 48px !important;
+    }
+
+
+    .game-type {
+      font-size: 30px;
+      /* Adjust the font size as needed */
+      /* Restrict the background to the content area */
+      background-color: transparent;
+      /* Make the background color transparent */
+
+      color: green;
+      /* Add a green stroke to the text */
+    }
+
+    .game-text {
+      font-size: 30px;
+    }
+
+    .match-date {
+      font-size: 20px;
+    }
+
+    .bg-white {
+      background-color: #ffffff !important;
+    }
+
+    .stadium {
+      font-size: 30px;
+      color: green;
+    }
+
+    .kickoff-time {
+      font-size: 15px;
+    }
+
+    .big-green-text {
+      font-size: 20px;
+      /* Adjust the font size as needed */
+      background-color: transparent;
+      /* Make the background color transparent */
+      /* Make the text color transparent */
+      color: green;
+      /* Add a green stroke to the text */
+    }
+
+    .full-background-image {
+      background-image: url('img/ticket_background.jpeg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      /* This makes the background image cover the entire container */
+      background-position: center;
+      /* This centers the background image */
+      min-height: 900px;
+      /* This ensures the container is at least the full height of the viewport */
+      /* These properties help center the content within the container */
+      max-width: 600px !important;
+    }
+
+    .text-white {
+      color: #ffffff !important;
+    }
+
+    .text-right {
+      text-align: right !important;
+    }
+
+    .w-25 {
+      width: 25% !important;
+    }
+
+    .mt-4,
+    .my-4 {
+      margin-top: 24px !important;
+    }
+
+    .text-uppercase {
+      text-transform: uppercase !important;
+    }
+
+    .p-3 {
+      padding: 16px !important;
+    }
+
+    .text-capitalize {
+      text-transform: capitalize !important;
+    }
+
+    .dropdown-divider {
+      height: 0;
+      margin: 8px 0;
+      overflow: hidden;
+      border-top: 1px solid #e9ecef;
+    }
+
+    .text-center {
+      text-align: center !important;
+    }
+
+    .text-right {
+      text-align: right !important;
+    }
+
+    .border {
+      border: 1px solid #dee2e6 !important;
+    }
+
+    .border-top {
+      border-top: 1px solid #dee2e6 !important;
+    }
+
+    .border-right {
+      border-right: 1px solid #dee2e6 !important;
+    }
+
+    .border-bottom {
+      border-bottom: 1px solid #dee2e6 !important;
+    }
+
+    .border-left {
+      border-left: 1px solid #dee2e6 !important;
+    }
+
+    .border-0 {
+      border: 0 !important;
+    }
+
+    .border-top-0 {
+      border-top: 0 !important;
+    }
+
+    .border-right-0 {
+      border-right: 0 !important;
+    }
+
+    .border-bottom-0 {
+      border-bottom: 0 !important;
+    }
+
+    .pr-5,
+    .px-5 {
+      padding-right: 48px !important;
+    }
+
+    .mt-4,
+    .my-4 {
+      margin-top: 24px !important;
+    }
+
+    .pb-2,
+    .py-2 {
+      padding-bottom: 8px !important;
+    }
+
+    .mt-1,
+    .my-1 {
+      margin-top: 4px !important;
+    }
+
+    .mt-2,
+    .my-2 {
+      margin-top: 8px !important;
+    }
+
+    .border-top {
+      border-top: 1px solid #dee2e6 !important;
+    }
+
+    .ml-5,
+    .mx-5 {
+      margin-left: 48px !important;
+    }
+
+    .c2:after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    .float-left {
+      float: left !important;
+    }
+
+    .float-right {
+      float: right !important;
+    }
+
+    .float-none {
+      float: none !important;
+    }
+
+
+    .p-3 {
+      padding: 1rem !important;
+    }
+
+    .pt-3,
+    .py-3 {
+      padding-top: 1rem !important;
+    }
+
+    .pr-3,
+    .px-3 {
+      padding-right: 1rem !important;
+    }
+
+    .pb-3,
+    .py-3 {
+      padding-bottom: 1rem !important;
+    }
+
+    .mb-4,
+    .my-4 {
+      margin-bottom: 1.5rem !important;
+    }
+
+    .pl-3,
+    .px-3 {
+      padding-left: 1rem !important;
+    }
+
+    .away_team,
+    .home_team {
+      color: green;
+      font-size: 20px
+    }
+  </style>
+
+</head>
+
+<body>
+  <div class=" container my-4 full-background-image">
+    <div class="margin-bottom:30px !important"></div>
+    <!-- <div class="d-flex justify-content-between"> -->
+    <div class="c2" style=" margin-bottom:30px; ">
+      <div class=" float-left">
+        <img class="p-3" height="100" width="100" src="/images/Highlanders_logo.png" alt="" />
+      </div>
+
+      <div class=" float-right">
+        <div style="padding-top: 30.4px !important;  margin-right:100px; margin-top:20px"><span
+            class="big-green-text">SOWETO TICKET NO:01</span></div>
+        <div class="pt-2" style=" margin-right:100px; margin-top:30px"><span class="game-type ">PSL</span> <span
+            class="game-text text-white">GAME</span></div>
+      </div>
+    </div>
+    <div></div>
+    <div class="text-center text-uppercase border-top mt-1">
+      <div style="margin-top:50px"><span class="stadium">BABOUR FIELD STADIUM</span></div>
+      <div class="pt-5 mb-4">
+        <span class="match-date text-white mt-2">SUNDAY,JUNE 7th</span>
+      </div>
+      <div class="kickoff-time text-white">Kickoff at 3 PM</div>
+      <div class=" text-center">
+        <hr class="l-2">
+      </div>
+    </div>
+    <div class="text-uppercase text-center " style="padding-top: 40px;">
+      <span class="home_team">Highlanders</span> vs <span class="away_team">ChickenInn fc</span>
+    </div>
+    <!-- <img src="/images/gme.jpeg" alt="" srcset="" /> -->
+    <div class=" text-right border border"
+      style="margin-top:40px;margin-bottom:40px;; background-color:white; border-color: #239933 !important;">
+      <img style="margin-right:150px; margin-top:25px;" src="/img/qr.png" width="250" height="250" alt="" />
+    </div>
+    <div style=" margin-top:20px">
+      <div class=" text-right   mt-4">
+        <a class="bg-white pt-3 pb-2  pr-5" style="padding-left: 76.8px !important;" href="/">http://hello.world.com/</a>
+      </div>
+    </div>
+
+  </div>
+</body>
+
+</html>

@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+
+<head>
+    <title>Babour Fields Ticket booking system</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,500,600,700,800,900,900i%7CPT+Serif:400,700">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .ie-panel {
+            display: none;
+            background: #212121;
+            padding: 10px 0;
+            box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, .3);
+            clear: both;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        html.ie-10 .ie-panel,
+        html.lt-ie-10 .ie-panel {
+            display: block;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img
+                src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820"
+                alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a>
+    </div>
+    <div class="preloader">
+        <div class="preloader-body">
+            <div class="cssload-container">
+                <div class="cssload-speeding-wheel"></div>
+            </div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <div class="page">
+
+        <!-- Page Header-->
+        <header class="section page-header">
+            <!-- RD Navbar-->
+            <div class="rd-navbar-wrap">
+                <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
+                    data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed"
+                    data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static"
+                    data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static"
+                    data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px" data-xxl-stick-up-offset="46px"
+                    data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+                    <div class="rd-navbar-main-outer">
+                        <div class="rd-navbar-main">
+                            <!-- RD Navbar Panel-->
+                            <div class="rd-navbar-panel">
+                                <!-- RD Navbar Toggle-->
+                                <button class="rd-navbar-toggle"
+                                    data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                                <!-- RD Navbar Brand-->
+                                <div class="rd-navbar-brand"><a href="/"><img class="brand-logo-light"
+                                            src="images/Highlanders_logo.png" alt="" width="140" height="57"
+                                            srcset="images/Highlanders_logo.png 2x" /></a></div>
+                            </div>
+                            <div class="rd-navbar-main-element">
+                                <div class="rd-navbar-nav-wrap">
+                                    <!-- RD Navbar Nav-->
+                                    <ul class="rd-navbar-nav">
+                                        <li class="rd-nav-item active"><a class="rd-nav-link" href="/">Home</a>
+                                        </li>
+
+                                        <li class="rd-nav-item"><a class="rd-nav-link" href="/games">Games</a>
+                                        </li>
+                                        <li class="rd-nav-item"><a class="rd-nav-link" href="about-us.html">About</a>
+                                        </li>
+                                        <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
+                                        </li>
+                                    </ul>
+                                    <a class="button button-white button-sm" href="/games">book now</a>
+                                </div>
+                            </div>
+                            <a class="button button-white button-sm" href="/games">book now</a>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+        <!-- Swiper-->
+        <section class="section section-lg section-main-bunner section-main-bunner-filter text-center">
+            <div class="main-bunner-img"
+                style="background-image: url('images/babourfields.jpg'); background-size: cover;"></div>
+            <div class="main-bunner-inner">
+                <div class="container">
+                    <div class="box-default">
+                        <h3 class="box-default-title">Welcome To BabourFields Ticket Booking System</h3>
+                        <div class="box-default-decor"></div>
+                        <p class="big box-default-text">Book match tickets online at the comfort of your home.Emagumeni
+                            stadium welcomes you.#siyinqaba#</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Featured Offers-->
+        <section class="section section-lg bg-default">
+            <div class="container">
+                <div class="row justify-content-center text-center">
+                    <div class="col-md-9 col-lg-7 wow-outer">
+                        <div class="wow slideInDown">
+                            <h2>Upcoming Games</h2>
+                            <p class="text-opacity-80">
+                                We host Zimbabwe premier league games,and other super cup matches.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row row-20 row-lg-30">
+                    <div class="col-md-6 col-lg-4 wow-outer" th:each="game : ${games}">
+                        <div class="wow fadeInUp">
+                            <div class="product-featured">
+                                <div class="product-featured-figure"><img th:src="${game.getFeature_img()}" alt=""
+                                        width="370" height="395" />
+                                    <div class="product-featured-button"><a class="button button-primary"
+                                            th:href="${'/book?game='+game.getId()}">Book
+                                            Now</a></div>
+                                </div>
+                                <div class="product-featured-caption">
+                                    <h4><a class="product-featured-title" href="!#">
+                                            <span class="home-team h6 " th:text="${game.getHome_team()}">..</span> VS
+                                            <span class="h6" th:text="${game.getAway_team()}">..</span>
+                                        </a>
+                                    </h4>
+                                    <span class="h6 fw-bold text-primary" th:text="${game.getType()}"></span>
+                                    <p class="big" th:text="${game.getKickoff()}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--  <div class="col-md-6 col-lg-4 wow-outer">
+                            <div class="wow fadeInUp">
+                                <div class="product-featured">
+                                    <div class="product-featured-figure"><img src="images/match_2.png" alt="" width="370" height="395"/>
+                                        <div class="product-featured-button"><a class="button button-primary" href="#">Book Now</a></div>
+                                    </div>
+                                    <div class="product-featured-caption">
+                                        <h4><a class="product-featured-title" href="#">FC Platinum VS Herentals College</a></h4>
+                                        <span class="h6 fw-bold text-primary">Castle Cup</span>
+                                        <p class="big">28 FEB 02:30 PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-lg-4 wow-outer">
+                            <div class="wow fadeInUp">
+                                <div class="product-featured">
+                                    <div class="product-featured-figure"><img src="images/match_3.jpg" alt="" width="370" height="395"/>
+                                        <div class="product-featured-button"><a class="button button-primary" href="#">Book Now</a></div>
+                                    </div>
+                                    <div class="product-featured-caption">
+                                        <h4><a class="product-featured-title" href="#">Caps United VS Dynamos</a></h4>
+                                        <span class="h6 fw-bold text-primary">Chibuku Super Cup</span>
+                                        <p class="big">2 MAR 02:30 PM</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="row isotope-wrap">
+                <!-- Isotope Content-->
+                <div class="col-lg-12">
+                    <div class="isotope" data-isotope-layout="fitRows" data-isotope-group="gallery"
+                        data-lightgallery="group" data-lg-thumbnail="false">
+                        <div class="row no-gutters row-condensed">
+                            <div class="col-12 col-sm-6 col-md-4 isotope-item wow-outer" data-filter="*">
+                                <div class="wow slideInDown">
+                                    <div class="gallery-item-classic"><img src="images/muduwa.jpg" alt="" width="640"
+                                            height="429" />
+                                        <div class="gallery-item-classic-caption"><a href="images/muduwa.jpg"
+                                                data-lightgallery="item">zoom</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-6 col-md-4 isotope-item wow-outer" data-filter="Category 3">
+                                <div class="wow slideInDown">
+                                    <div class="gallery-item-classic"><img
+                                            src="images/262241533_7336682133024155_2762600628340868498_n.jpg" alt=""
+                                            width="640" height="429" />
+                                        <div class="gallery-item-classic-caption"><a
+                                                href="images/262241533_7336682133024155_2762600628340868498_n.jpg"
+                                                data-lightgallery="item">zoom</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 isotope-item wow-outer" data-filter="Category 3">
+                                <div class="wow slideInDown">
+                                    <div class="gallery-item-classic"><img src="images/Highlanders.jpg" alt=""
+                                            width="640" height="429" />
+                                        <div class="gallery-item-classic-caption"><a href="images/Highlanders.jpg"
+                                                data-lightgallery="item">zoom</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 isotope-item wow-outer" data-filter="Category 3">
+                                <div class="wow fadeInUp">
+                                    <div class="gallery-item-classic"><img
+                                            src="images/425840515_1005395274355877_4593726123687986787_n.jpg" alt=""
+                                            width="960" height="429" />
+                                        <div class="gallery-item-classic-caption"><a
+                                                href="images/425840515_1005395274355877_4593726123687986787_n.jpg"
+                                                data-lightgallery="item">zoom</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 isotope-item wow-outer" data-filter="Category 2">
+                                <div class="wow fadeInUp">
+                                    <div class="gallery-item-classic"><img src="images/highlanders_coach_1.jpg" alt=""
+                                            width="960" height="429" />
+                                        <div class="gallery-item-classic-caption"><a href="images/highlanders_coach.jpg"
+                                                data-lightgallery="item">zoom</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section-lg bg-default">
+            <div class="container wow-outer">
+                <h2 class="text-center wow slideInDown">Recent News Update</h2>
+                <!-- Owl Carousel-->
+                <div class="owl-carousel wow fadeInUp" data-items="1" data-md-items="2" data-lg-items="3"
+                    data-dots="true" data-nav="false" data-stage-padding="15" data-loop="false" data-margin="30"
+                    data-mouse-drag="false">
+                    <div class="post-corporate"><a class="badge" href="#">Jul 02, 2024</a>
+                        <h4 class="post-corporate-title"><a href="#">Player of the Month</a></h4>
+                        <div class="post-corporate-text">
+                            <p>Peter Mudhuwa deffensive midfielder player of the month
+                                ...</p>
+                        </div>
+                        <!--<a class="post-corporate-link" href="#">Read more<span class="icon linearicons-arrow-right"></span></a>-->
+                    </div>
+                    <div class="post-corporate"><a class="badge" href="#">Jul 12, 2023</a>
+                        <h4 class="post-corporate-title"><a href="#">Announcing new Coach Of the Team!!</a></h4>
+                        <div class="post-corporate-text">
+                            <p>Highlanders have appointed a new couch Kelvin Kaindu to help on season 2023/24 ...</p>
+                        </div>
+                        <!--<a class="post-corporate-link" href="#">Read more<span class="icon linearicons-arrow-right"></span></a>-->
+                    </div>
+
+                    <div class="post-corporate"><a class="badge" href="#">Aug 15, 2023</a>
+                        <h4 class="post-corporate-title"><a href="#">Player of the season</a></h4>
+                        <div class="post-corporate-text">
+                            <p>Andrew Mbeba was the outstanding player of the season 2023/24</p>
+                        </div>
+                        <!--                            <a class="post-corporate-link" href="#">Read more<span class="icon linearicons-arrow-right"></span>
+                                                        </a>-->
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <section class="section section-lg bg-gray-1 text-center">
+            <div class="container">
+                <h2>Our Sponsors</h2>
+                <div class="row row-30">
+                    <div class="col-6 col-md-3"><a class="clients-default" href="https://www.netone.co.zw/"><img
+                                src="images/netone_logo.png" alt="" width="270" height="119" /></a></div>
+                    <div class="col-6 col-md-3"><a class="clients-default" href="https://nyaradzo.co.zw/"><img
+                                src="images/nyaradzo_logo.png" alt="" width="270" height="119" /></a></div>
+                    <div class="col-6 col-md-3"><a class="clients-default" href="https://www.arenelfoods.com/"><img
+                                src="images/arenel_logo.png" alt="" width="270" height="119" /></a></div>
+                    <div class="col-6 col-md-3"><a class="clients-default"
+                            href="https://m.facebook.com/sakundaholdings/"><img src="images/sakunda_holdings_logo.jpg"
+                                alt="" width="270" height="119" /></a></div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Page Footer-->
+        <footer class="section footer-minimal context-dark">
+            <div class="container wow-outer">
+                <div class="wow fadeIn">
+                    <div class="row row-60">
+                        <div class="col-12"><a href="/"><img src="images/Highlanders_logo.png" alt="" width="140"
+                                    height="57" srcset="images/Highlanders_logo.png 2x" /></a></div>
+                        <div class="col-12">
+                            <ul class="footer-minimal-nav">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Faq</a></li>
+                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="about-us.html">About</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12">
+                            <ul class="social-list">
+                                <li><a class="icon icon-sm icon-circle icon-circle-md icon-bg-white fa-facebook"
+                                        href="https://www.facebook.com/highlanders.co.zw/"></a></li>
+
+                                <li><a class="icon icon-sm icon-circle icon-circle-md icon-bg-white fa-twitter"
+                                        href="#"></a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="rights"><span>&copy;&nbsp; </span>
+                        <span class="copyright-year"></span>
+                        <span>&nbsp;</span><span>BarbourFields Stadium</span><span>.&nbsp;</span><span>
+                            All Rights Reserved.</span><span>&nbsp;</span>
+                        <a href="#">
+                            Privacy Policy</a>.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div class="snackbars" id="form-output-global"></div>
+    <script src="js/core.min.js"></script>
+    <script src="js/script.js"></script>
+</body>
+
+</html>
