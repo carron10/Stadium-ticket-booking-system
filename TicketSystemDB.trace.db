@@ -2574,3 +2574,123 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/MAPHOSA
 	at org.h2.mvstore.SingleFileStore.open(SingleFileStore.java:81)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:286)
 	... 64 more
+2024-03-02 20:58:24.809422+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 20:58:24.915360+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null unique, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null unique, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 20:58:24.952339+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 20:58:54.503521+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 20:58:54.573480+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null unique, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null unique, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 20:58:54.601463+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:02:31.932417+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:02:31.957400+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null unique, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null unique, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:02:31.966395+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:06:41.675343+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:06:41.696331+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:06:41.725315+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:07:04.160458+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:07:04.233415+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:07:04.298377+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:08:58.752339+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:08:58.797314+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:08:58.807307+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:09:03.599141+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:09:03.640117+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:09:03.652109+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:11:49.111306+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:11:49.679968+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:11:50.118715+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FK5yjuhrpxagpmstspwxgl70mvq foreign key (ticket_id) references tickets [42001-224]
+2024-03-02 21:12:51.448287+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:12:51.467276+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:12:51.472274+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket [42001-224]
+2024-03-02 21:13:48.817965+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:13:48.866753+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:13:48.876748+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket [42001-224]
+2024-03-02 21:15:42.627710+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:15:42.691674+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:15:42.706667+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket [42001-224]
+2024-03-02 21:17:02.826018+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "drop table if exists [*]order cascade "; expected "identifier"; SQL statement:
+drop table if exists order cascade  [42001-224]
+2024-03-02 21:17:02.871014+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "create table [*]order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id))"; expected "identifier"; SQL statement:
+create table order (created_at timestamp(6), id bigint not null, ticket_id bigint not null, address_1 varchar(255) not null, address_2 varchar(255), email varchar(255), firstname varchar(255) not null, lastname varchar(255) not null, order_ticket_qr varchar(255), payment_method varchar(255) not null, town varchar(255) not null, primary key (id)) [42001-224]
+2024-03-02 21:17:02.879987+02:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "alter table if exists [*]order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket"; expected "identifier"; SQL statement:
+alter table if exists order add constraint FKpsu8tva3qao0un085kenw1s3i foreign key (ticket_id) references ticket [42001-224]
+2024-03-03 10:44:37.349855+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CONTACT_US GAMES [*]ORDERS"; SQL statement:
+SELECT * FROM CONTACT_US GAMES ORDERS [42000-224]
+2024-03-03 10:44:38.099425+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CONTACT_US GAMES [*]ORDERS"; SQL statement:
+SELECT * FROM CONTACT_US GAMES ORDERS [42000-224]
+2024-03-03 10:44:39.161832+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * FROM CONTACT_US GAMES [*]ORDERS"; SQL statement:
+SELECT * FROM CONTACT_US GAMES ORDERS [42000-224]
+2024-03-03 10:44:57.571594+02:00 jdbc[13]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "SELECT * [*]FRONTACT_US OM CONTACT_US GAMES ORDERS"; SQL statement:
+SELECT * FRONTACT_US OM CONTACT_US GAMES ORDERS [42000-224]

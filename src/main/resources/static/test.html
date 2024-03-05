@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html class="wide wow-animation" lang="en">
+
+<head>
+    <title>Babour Fields Ticket booking system</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" type="text/css"
+        href="//fonts.googleapis.com/css?family=Poppins:300,300i,400,500,600,700,800,900,900i%7CPT+Serif:400,700">
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/fonts.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        .ie-panel {
+            display: none;
+            background: #212121;
+            padding: 10px 0;
+            box-shadow: 3px 3px 5px 0 rgba(0, 0, 0, .3);
+            clear: both;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        html.ie-10 .ie-panel,
+        html.lt-ie-10 .ie-panel {
+            display: block;
+        }
+
+        .ticket:hover {
+            border-color: green;
+        }
+
+        .ticket.selected {
+            border-color: red;
+        }
+
+        .ticket {
+            cursor: pointer;
+        }
+
+        @media (min-width: 1200px) {
+            .breadcrumbs-custom {
+                padding-top: 140px;
+                padding-bottom: 80px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ie-panel"><a href="http://windows.microsoft.com/en-US/internet-explorer/"><img
+                src="images/ie8-panel/warning_bar_0000_us.jpg" height="42" width="820"
+                alt="You are using an outdated browser. For a faster, safer browsing experience, upgrade for free today."></a>
+    </div>
+    <div class="preloader">
+        <div class="preloader-body">
+            <div class="cssload-container">
+                <div class="cssload-speeding-wheel"></div>
+            </div>
+            <p>Loading...</p>
+        </div>
+    </div>
+    <div class="page">
+
+        <!-- Page Header-->
+        <header class="section page-header">
+            <!-- RD Navbar-->
+            <div class="rd-navbar-wrap">
+                <nav class="rd-navbar rd-navbar-classic" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed"
+                    data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed"
+                    data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-static"
+                    data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static"
+                    data-lg-stick-up-offset="46px" data-xl-stick-up-offset="46px" data-xxl-stick-up-offset="46px"
+                    data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+                    <div class="rd-navbar-main-outer">
+                        <div class="rd-navbar-main">
+                            <!-- RD Navbar Panel-->
+                            <div class="rd-navbar-panel">
+                                <!-- RD Navbar Toggle-->
+                                <button class="rd-navbar-toggle"
+                                    data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                                <!-- RD Navbar Brand-->
+                                <div class="rd-navbar-brand"><a href="index.html"><img class="brand-logo-light"
+                                            src="images/Highlanders_logo.png" alt="" width="140" height="57"
+                                            srcset="images/Highlanders_logo.png 2x" /></a></div>
+                            </div>
+                            <div class="rd-navbar-main-element">
+                                <div class="rd-navbar-nav-wrap">
+                                    <!-- RD Navbar Nav-->
+                                    <ul class="rd-navbar-nav">
+                                        <li class="rd-nav-item active"><a class="rd-nav-link" href="index.html">Home</a>
+                                        </li>
+
+                                        <li class="rd-nav-item"><a class="rd-nav-link" href="/games">Games</a>
+                                        </li>
+                                        <li class="rd-nav-item"><a class="rd-nav-link" href="about-us.html">About</a>
+                                        </li>
+                                        <li class="rd-nav-item"><a class="rd-nav-link" href="contacts.html">Contacts</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </nav>
+            </div>
+        </header>
+
+        <section class="parallax-container overlay-1" data-parallax-img="images/breadcrumbs.jpg">
+            <div class="parallax-content breadcrumbs-custom context-dark">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-12 col-lg-9">
+                            <h2 class="breadcrumbs-custom-title">Book Ticket</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section class="section section-lg bg-gray-1">
+            <div class="container">
+                <h3>Select Ticket </h3>
+                You have selected to watch-
+                <span class="home-team h6 ">HighLanders</span> VS <span class="h6">Bulawayo Chiefs</span>
+                <a class="btn btn-primary btn-sm" href="/games">Choose Match</a>
+                <div class="order_box">
+                    <div class="h5 my-2 py-1 text-monospace">Available Tickets</div>
+                    <div class=" row mt-2">
+                        <div class="col-md-6">
+                            <div class="rd-nav-item ticket my-1  card " data-ticket-name="empakweni">
+                                <div class="card-body py-2">
+                                    <span class="h6">VIP Reserved Side</span>
+                                    <div class="alert py-1 px-0 m-0">Ticket Descption</div>
+                                </div>
+                                <div class=" card-footer py-1">
+                                    <div class=" d-flex justify-content-between">
+                                        <div>$<span class="price">20.0</span></div>
+                                        <div class="text-primary"><span>20</span> Left</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row mt-2">
+                        <div class="col-md-6">
+                            <div class="rd-nav-item ticket my-1  card " data-ticket-name="empakweni">
+                                <div class="card-body py-2">
+                                    <span class="h6">VVIP Side</span>
+                                    <div class="alert py-1 px-0 m-0">Ticket Descption</div>
+                                </div>
+                                <div class=" card-footer py-1">
+                                    <div class=" d-flex justify-content-between">
+                                        <div>$<span class="price">15.0</span></div>
+                                        <div class="text-primary"><span>20</span> Left</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row mt-2">
+                        <div class="col-md-6">
+                            <div class="rd-nav-item ticket my-1  card " data-ticket-name="empakweni">
+                                <div class="card-body py-2">
+                                    <span class="h6">VVIP Center</span>
+                                    <div class="alert py-1 px-0 m-0">Ticket Descption</div>
+                                </div>
+                                <div class=" card-footer py-1">
+                                    <div class=" d-flex justify-content-between">
+                                        <div>$<span class="price">10.0</span></div>
+                                        <div class="text-primary"><span>20</span> Left</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row mt-2">
+                        <div class="col-md-6">
+                            <div class="rd-nav-item ticket my-1  card " data-ticket-name="empakweni">
+                                <div class="card-body py-2">
+                                    <span class="h6">Empakweni</span>
+                                    <div class="alert py-1 px-0 m-0">Ticket for home team fans</div>
+                                </div>
+                                <div class=" card-footer py-1">
+                                    <div class=" d-flex justify-content-between">
+                                        <div>$<span class="price">5.0</span></div>
+                                        <div class="text-primary"><span>20</span> Left</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row mt-2">
+                        <div class="col-md-6">
+                            <div class="rd-nav-item ticket my-1  card " data-ticket-name="empakweni">
+                                <div class="card-body py-2">
+                                    <span class="h6">Mpilo End</span>
+                                    <div class="alert py-1 px-0 m-0">Ticket for away team fans</div>
+                                </div>
+                                <div class=" card-footer py-1">
+                                    <div class=" d-flex justify-content-between">
+                                        <div>$<span class="price">5.0</span></div>
+                                        <div class="text-primary"><span>20</span> Left</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class=" row mt-2">
+                        <div class="col-md-6">
+                            <div class="rd-nav-item ticket my-1  card " data-ticket-name="empakweni">
+                                <div class="card-body py-2">
+                                    <span class="h6">Soweto</span>
+                                    <div class="alert py-1 px-0 m-0">The die hard home fans area</div>
+                                </div>
+                                <div class=" card-footer py-1">
+                                    <div class=" d-flex justify-content-between">
+                                        <div>$<span class="price">5.0</span></div>
+                                        <div class="text-primary"><span>20</span> Left</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" d-flex justify-content-end py-2">
+                    <div><button class="btn btn-primary" id="checkout">Proceed to Checkout</button></div>
+                </div>
+            </div>
+        </section>
+        <!-- Page Footer-->
+        <footer class="section footer-minimal context-dark">
+            <div class="container wow-outer">
+                <div class="wow fadeIn">
+                    <div class="row row-60">
+                        <div class="col-12"><a href="index.html"><img src="images/Highlanders_logo.png" alt=""
+                                    width="140" height="57" srcset="images/Highlanders_logo.png 2x" /></a></div>
+                        <div class="col-12">
+                            <ul class="footer-minimal-nav">
+                                <li><a href="#">Home</a></li>
+                                <li><a href="#">Faq</a></li>
+                                <li><a href="contacts.html">Contacts</a></li>
+                                <li><a href="#">Privacy Policy</a></li>
+                                <li><a href="about-us.html">About</a></li>
+                            </ul>
+                        </div>
+                        <div class="col-12">
+                            <ul class="social-list">
+                                <li><a class="icon icon-sm icon-circle icon-circle-md icon-bg-white fa-facebook"
+                                        href="https://www.facebook.com/highlanders.co.zw/"></a></li>
+
+                                <li><a class="icon icon-sm icon-circle icon-circle-md icon-bg-white fa-twitter"
+                                        href="#"></a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <p class="rights"><span>&copy;&nbsp; </span>
+                        <span class="copyright-year"></span>
+                        <span>&nbsp;</span><span>BarbourFields Stadium</span><span>.&nbsp;</span><span>
+                            All Rights Reserved.</span><span>&nbsp;</span>
+                        <a href="#">
+                            Privacy Policy</a>.
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </div>
+    <div class="snackbars" id="form-output-global"></div>
+    <script src="js/core.min.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        $(function () {
+
+            function getUrlVars(url) {
+                var vars = [],
+                    hash, url = (url == null || url == undefined) ? window.location.href : url;
+                url = url.split("#")[0];
+
+                var hashes = url.slice(url.indexOf('?') + 1).split('&');
+                if (hashes.length == 1) {
+                    if (!hashes[0].includes("=")) {
+                        hashes = []
+                    }
+                }
+                for (var i = 0; i < hashes.length; i++) {
+                    hash = hashes[i].split('=');
+                    vars[hash[0]] = hash[1];
+                }
+                return vars;
+            }
+            $("#checkout").click(function () {
+                var selected_ticket = $(".ticket.selected");
+                var nextURL = "checkout.html", i = 0, params = getUrlVars();
+                params['ticket'] = selected_ticket.attr("data-ticket-name")
+                Object.keys(params).forEach(e => {
+                    nextURL += (i == 0) ? "?" + e + '=' + params[e] : '&' + e + '=' + params[e];
+                    i++;
+                });
+                window.location.replace(nextURL);
+            })
+            $("#checkout").attr('disabled', true)
+            $(".ticket").click(function (e) {
+
+                var tickets = $(".ticket")
+                for (let i = 0; i < tickets.length; i++) {
+                    const ticket = $(tickets[i]);
+                    ticket.removeClass("selected")
+                }
+                $(this).addClass("selected")
+                $("#checkout").attr('disabled', false)
+
+            })
+        })
+    </script>
+</body>
+
+</html>
