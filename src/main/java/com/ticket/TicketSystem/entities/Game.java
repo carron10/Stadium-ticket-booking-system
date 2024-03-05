@@ -4,6 +4,8 @@
  */
 package com.ticket.TicketSystem.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -11,6 +13,10 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.Date;
+import jakarta.persistence.OneToMany;
+import jakarta.validation.constraints.Max;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -29,13 +35,17 @@ public class Game {
 
     @Column(nullable = false)
     private String away_team;
+    private String type;
     
     @Column(nullable = false)
     private Date kickoff;
-    
+
     private String away_team_logo;
     private String home_team_logo;
-    
+    private String feature_img;
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<Ticket> tickets;
 
     /**
      * @return the id
@@ -119,6 +129,48 @@ public class Game {
      */
     public void setHome_team_logo(String home_team_logo) {
         this.home_team_logo = home_team_logo;
+    }
+
+    /**
+     * @return the tickets
+     */
+    public List<Ticket> getTickets() {
+        return (List<Ticket>) tickets;
+    }
+
+    /**
+     * @param tickets the tickets to set
+     */
+    public void setTickets(List<Ticket> tickets) {
+        this.tickets = tickets;
+    }
+
+    /**
+     * @return the feature_img
+     */
+    public String getFeature_img() {
+        return feature_img;
+    }
+
+    /**
+     * @param feature_img the feature_img to set
+     */
+    public void setFeature_img(String feature_img) {
+        this.feature_img = feature_img;
+    }
+
+    /**
+     * @return the type
+     */
+    public String getType() {
+        return type;
+    }
+
+    /**
+     * @param type the type to set
+     */
+    public void setType(String type) {
+        this.type = type;
     }
 
 }

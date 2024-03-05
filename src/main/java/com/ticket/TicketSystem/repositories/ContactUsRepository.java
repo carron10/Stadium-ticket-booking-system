@@ -4,15 +4,13 @@
  */
 package com.ticket.TicketSystem.repositories;
 
-import com.ticket.TicketSystem.entities.Game;
+import com.ticket.TicketSystem.entities.ContactUs;
 import org.springframework.data.repository.CrudRepository;
 
 /**
  *
  * @author Carron Muleya
  */
-public interface GameRepository extends CrudRepository<Game,Long> {
-
-    public Game findById(int game);
+public interface ContactUsRepository extends CrudRepository<ContactUs,Long> {
     
 }
