@@ -32,9 +32,8 @@ public class Order {
     private String firstname;
     @Column(nullable = false)
     private String lastname;
-    
 
-    @Email(message="Invalid email")
+    @Email(message = "Invalid email")
     @NotEmpty(message = "Please provide Email")
     private String email_address;
 
@@ -44,23 +43,28 @@ public class Order {
 
     @Column(nullable = false)
     private String town;
-    
-    @NotEmpty(message="No phone number provided")
+
+    @NotEmpty(message = "No phone number provided")
     private String phone;
 
     @Column(nullable = false)
-    @NotEmpty(message="No payment method provided")
+    @NotEmpty(message = "No payment method provided")
     private String payment_method;
 
     @ManyToOne
     @JoinColumn(name = "ticket_id", nullable = false)
     private Ticket ticket;
 
+    @Column(nullable = false)
     private String order_ticket_qr;
-
     
+    @Column(nullable = false)
+    private String uuid;
+
+    private boolean paid = false;
+
     @CreatedDate
-    private Date created_at=new Date();
+    private Date created_at = new Date();
 
     /**
      * @return the firstname
@@ -90,7 +94,6 @@ public class Order {
         this.lastname = lastname;
     }
 
- 
     /**
      * @return the address_1
      */
@@ -229,6 +232,34 @@ public class Order {
      */
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    /**
+     * @return the paid
+     */
+    public boolean isPaid() {
+        return paid;
+    }
+
+    /**
+     * @param paid the paid to set
+     */
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
+
+    /**
+     * @return the uuid
+     */
+    public String getUuid() {
+        return uuid;
+    }
+
+    /**
+     * @param uuid the uuid to set
+     */
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
     }
 
 }

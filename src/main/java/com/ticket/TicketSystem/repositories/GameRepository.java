@@ -5,6 +5,8 @@
 package com.ticket.TicketSystem.repositories;
 
 import com.ticket.TicketSystem.entities.Game;
+import java.util.List;
+import org.springframework.data.domain.Limit;
 import org.springframework.data.repository.CrudRepository;
 
 /**
@@ -14,5 +16,5 @@ import org.springframework.data.repository.CrudRepository;
 public interface GameRepository extends CrudRepository<Game,Long> {
 
     public Game findById(int game);
-    
+    public List<Game> findByOrderByKickoffDesc(Limit limit);
 }
