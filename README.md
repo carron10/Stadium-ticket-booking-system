@@ -1,5 +1,3 @@
-[GitHub Readme.md](https://github.com/readme-readme/readme-readme/blob/main/GitHub%20Readme%20Template.md)
-
 ## TicketBookingSystem 🏟️
 A user-friendly online ticket booking system for stadium events built with SpringBoot.
 
@@ -71,4 +69,4 @@ We welcome contributions to improve the TicketBookingSystem. Follow these steps 
 ---
 
 ##  License
-This project is licensed under the MIT License.
+This project is licensed under the [MIT License](https://opensource.org/license/MIT).
