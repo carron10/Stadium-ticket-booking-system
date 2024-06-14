@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <div th:replace="admin/fragments/head :: headContent"></div>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div th:replace="admin/fragments/sidebar:: sidebarContent"></div>
+
+        <div class="main">
+
+            <div th:replace="admin/fragments/navbar :: navbarContent"></div>
+
+
+            <main class="content">
+                <div class="container-fluid p-0">
+                    <div th:if="${teams == null}">
+                        <div class="alert card mx-1 alert-warning p-0  fade show " style="border-left: solid blue; "
+                            role="alert">
+                            <div class="d-flex align-items-end row">
+                                <div class="col-sm-7">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-danger h4">No Teams Available</h5>
+                                        <p class="mb-4">
+                                            To add a game first add atleast 2 games in <a href="/admin/teams">teams
+                                                page.</a>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="col-sm-5 text-center text-sm-left d-none d-sm-inline-block">
+                                    <div class="card-body pb-0 px-0 px-md-4">
+                                        <img src="/img/man-with-laptop-light.png" height="140" alt="View Badge User">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div th:if="${teams != null}">
+                        <div th:if="${#lists.size(teams) < 2}">
+
+                            <div class="alert card mx-1 alert-warning p-0  fade show " style="border-left: solid blue; "
+                                role="alert">
+                                <div class="d-flex align-items-end row">
+                                    <div class="col-sm-7">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-danger h4">No Teams Available</h5>
+                                            <p class="mb-4">
+                                                Not enough teams to create a game. You need at least 2 teams. Add more
+                                                teams at <a href="/admin/teams">teams page.</a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-5 text-center text-sm-left d-none d-sm-inline-block">
+                                        <div class="card-body pb-0 px-0 px-md-4">
+                                            <img src="/img/man-with-laptop-light.png" height="140"
+                                                alt="View Badge User">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div th:if="${#lists.size(teams) >= 2}">
+                            <div class="d-flex justify-content-between mb-2">
+                                <div>
+                                    <h1 class="h3 text-primary">Add New Game</h1>
+                                </div>
+                            </div>
+                            <form id="add-new-game" class="needs-validation" novalidate>
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name:</label>
+                                    <input type="text" class="form-control" id="name" name="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="kickoff" class="form-label">Kickoff Date:</label>
+                                    <input type="datetime-local" class="form-control" required id="kickoff" name="kickoff">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="featured_img" class="form-label">Featured Image(optional)</label>
+                                    <input type="file" class="form-control" id="featured_img" name="featured_img">
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="home_team" class="form-label">Home Team</label>
+                                        <select class="form-select" id="home_team" name="home_team" required>
+                                            <option th:each="team : ${teams}" th:text="${team.name}"
+                                                th:value="${team.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="away_team" class="form-label">Away Team</label>
+                                        <select class="form-select" id="away_team" name="away_team" required>
+                                            <option th:each="team : ${teams}" th:text="${team.name}"
+                                                th:value="${team.id}">
+                                            </option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="card flex-fill w-100 rounded-0">
+                                    <div class="card-header bg-primary-2 rounded-0 m-0 p-1">
+                                        <div class="h5 float-start text-white">Tickets Price</div>
+                                    </div>
+                                    <div class="card-body p-0 m-0">
+                                        <table id="Tickets" class="table table-striped form-list-items">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Include</th>
+                                                    <th scope="col">Name</th>
+                                                    <th scope="col">Price</th>
+                                                    <th scope="col">Quantiry</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+
+                                                <tr class="form-list-item" th:each="ticket : ${tickets}"
+                                                    th:id="${ticket.id}">
+                                                    <td>
+                                                        <input type="text" name="ticket_id" hidden th:value="${ticket.id}">
+                                                        <input checked type="checkbox" name="included">
+                                                    </td>
+                                                    <td class="type" th:text="${ticket.type}"></td>
+                                                    <td><input type="number"  class="form-control form-control-sm w-50" step="0.01" min="0" name="price" th:value="${ticket.price}">
+                                                    </td>
+                                                    <td><input type="number" class="form-control form-control-sm w-50" name="quantity" th:value="${ticket.quantity}"></td>
+                                                </tr>
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-end">
+                                    <button class="btn btn-primary btn-sm" type="submit">Add New Game</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+
+            <div th:replace="admin/fragments/footer :: footerContent"></div>
+
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $("#add-new-game").submit(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                var form = document.getElementById("add-new-game")
+                if (form.checkValidity() === true) {
+                    var d = getFormData("add-new-game")
+                    console.log(d);
+                    if(d.away_team===d.home_team){
+                        error("Please select different teams,A game cannot be made of one team!!");
+                        return
+                    }
+                    var team_data = convertToFormData(d);
+                    console.log(team_data);
+                    $.ajax({
+                        url: 'api/games',
+                        type: 'POST',
+                        data: team_data,
+                        processData: false,  // Important: Prevent jQuery from processing the data
+                        contentType: false,  // Important: Prevent jQuery from setting contentType
+                        success: function (response) {
+                            success("New Game was addded Successfully!!", "DONE!!")
+                            reloadPage(500)
+                        },
+                        error: function (xhr, status, err) {
+                            let response;
+                            try {
+                                if (xhr.getResponseHeader('Content-Type').includes('application/json')) {
+                                    response = JSON.parse(xhr.responseText);
+                                    error(response.message || xhr.responseText, xhr.statusText);
+                                } else {
+                                    error(xhr.responseText, xhr.statusText);
+                                }
+                            } catch (e) {
+                                // In case of an error during parsing or content type check, fallback to responseText
+                                error(xhr.responseText, xhr.statusText);
+                            }
+                        }
+                    });
+                }
+                $(form).addClass("was-validated");
+            });
+        })
+    </script>
+</body>
+
+</html>

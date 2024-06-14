@@ -2,6 +2,44 @@
 /*
 * Trunk version 2.0.1
 */
+.game-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.game {
+    position: relative;
+    width: 100%; /* Adjust the width as needed */
+    height: 150px; /* Adjust the height as needed */
+    margin: 0px;
+    /* border: 1px solid #ccc; */
+    /* border-radius: 10px; */
+    overflow: hidden;
+    /* background-color: #f9f9f9; */
+}
+.game-background-image {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%; /* Adjust the width as needed */
+    height: 100%; /* Adjust the height as needed */
+    transform: translate(-50%, -50%);
+    z-index: 1;
+}
+.home-team, .away-team {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 80px; /* Adjust the width as needed */
+    height: auto;
+    z-index: 2;
+}
+.home-team {
+    right: 10px; /* Adjust the spacing as needed */
+}
+.away-team {
+    left: 10px; /* Adjust the spacing as needed */
+}
 /*
 * Contexts
 */

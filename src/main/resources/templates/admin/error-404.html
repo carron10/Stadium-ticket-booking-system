@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<div th:replace="admin/fragments/head :: headContent"></div>
+
+<body>
+    <div class="wrapper">
+
+        <div th:replace="admin/fragments/sidebar:: sidebarContent"></div>
+
+        <div class="main">
+            <div th:replace="admin/fragments/navbar :: navbarContent"></div>
+
+
+            <main class="content">
+                <!-- style="background-image: url('/img/farming-irrigation-system-1000x1000.webp') !important;"> -->
+
+                <div class="container-fluid p-0">
+
+                    <!-- <div class="alert card mx-1 alert-white p-0  fade show "
+                        style="border-left: solid rgb(107, 22, 22); " role="alert">
+                        <div class="d-flex align-items-end row">
+                            <div class="col-sm-7">
+                                <div class="card-body">
+                                    <h5 class="card-title text-danger h4">👋Error 404👨‍💻</h5>
+                                    <p class="mb-4">
+                                        The page/resource that you are looking for is not found!!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div> -->
+
+                    <div class="w-100 text-center justify-content-center d-flex">
+                        <img class="img-fluid" height="300" alt="File / resource not found" src="/img/template-web-404-isometric-page-working-error-host-found_68196-1893.avif">
+                    </div>
+
+                </div>
+            </main>
+
+
+            <div th:replace="admin/fragments/footer :: footerContent"></div>
+        </div>
+    </div>
+
+</body>
+
+</html>

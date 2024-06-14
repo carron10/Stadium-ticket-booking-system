@@ -4,19 +4,17 @@
  */
 package com.ticket.TicketSystem.entities;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import java.util.List;
-import org.springframework.context.annotation.Primary;
 
 /**
  *
@@ -31,22 +29,17 @@ public class Ticket {
     private Long id;
  
     @Column(nullable=false)
-    private double price;
-    
-    //The game
-    @ManyToOne
-    @JoinColumn(name = "game_id", nullable = false)
-    @JsonBackReference
-    private Game game;
+    @NotNull(message = "The price should not be null")
+    private Double price;
 
+    private int quantity;
+    
     private String description;
     
-    //Available tickets quantity
-//    @Size(min = 0, max = 500)
-    private int quantity;
 
     //The type of ticket
-//    @Column(unique=true)
+    @Column(unique=true)
+    @NotNull(message = "The type of a ticket should be specified")
     private String type;
 
     /**
@@ -63,19 +56,9 @@ public class Ticket {
         this.id = id;
     }
 
-    /**
-     * @return the game
-     */
-    public Game getGame() {
-        return game;
-    }
+   
 
-    /**
-     * @param game the game to set
-     */
-    public void setGame(Game game) {
-        this.game = game;
-    }
+  
 
 //    /**
 //     * @return the orders
@@ -91,19 +74,7 @@ public class Ticket {
 //        this.orders = orders;
 //    }
 
-    /**
-     * @return the quantity
-     */
-    public int getQuantity() {
-        return quantity;
-    }
-
-    /**
-     * @param quantity the quantity to set
-     */
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
+ 
 
     /**
      * @return the type
@@ -145,5 +116,19 @@ public class Ticket {
      */
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    /**
+     * @return the quantity
+     */
+    public int getQuantity() {
+        return quantity;
+    }
+
+    /**
+     * @param quantity the quantity to set
+     */
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 }

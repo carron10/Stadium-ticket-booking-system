@@ -7,7 +7,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -53,7 +52,7 @@ public class Order {
 
     @ManyToOne
     @JoinColumn(name = "ticket_id", nullable = false)
-    private Ticket ticket;
+    private GameTicket ticket;
 
     @Column(nullable = false)
     private String order_ticket_qr;
@@ -65,6 +64,9 @@ public class Order {
 
     @CreatedDate
     private Date created_at = new Date();
+    
+    @OneToOne(mappedBy = "order")
+    private PaymentResult paymentResult;
 
     /**
      * @return the firstname
@@ -153,14 +155,14 @@ public class Order {
     /**
      * @return the ticket
      */
-    public Ticket getTicket() {
+    public GameTicket getTicket() {
         return ticket;
     }
 
     /**
      * @param ticket the ticket to set
      */
-    public void setTicket(Ticket ticket) {
+    public void setTicket(GameTicket ticket) {
         this.ticket = ticket;
     }
 
@@ -260,6 +262,20 @@ public class Order {
      */
     public void setUuid(String uuid) {
         this.uuid = uuid;
+    }
+
+    /**
+     * @return the paymentResult
+     */
+    public PaymentResult getPaymentResult() {
+        return paymentResult;
+    }
+
+    /**
+     * @param paymentResult the paymentResult to set
+     */
+    public void setPaymentResult(PaymentResult paymentResult) {
+        this.paymentResult = paymentResult;
     }
 
 }

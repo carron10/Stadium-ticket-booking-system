@@ -1,0 +1,102 @@
+<footer th:fragment="footerContent" class="footer">
+    <div class="modal" id="loaderModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="loaderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0" style="background-color: rgba(255, 255, 255, 0);">
+                <div class="modal-body text-center">
+                    <button class="btn btn-primary" type="button" disabled>
+                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        <span class="sr-only">Waiting...</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal" id="alert" aria-hidden="true" style="z-index: 1500 !important;">
+        <div class=" modal-dialog modal-dialog-scrollable">
+            <div class="modal-content rounded-0">
+                <div class="modal-header rounded-0 py-0 border-0 border-bottom d-flex justify-content-between">
+                    <div class="title">
+                    </div>
+                    <a class="close small text-white" data-bs-dismiss="modal" aria-label="Close">
+                        <span class=" h3 ">X</span>
+                    </a>
+                </div>
+                <div class="modal-body py-1 m-0 text-center text-white">
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row text-muted">
+            <div class="col-6 text-start">
+                <p class="mb-0">
+                    <a class="text-muted" href="https://nust.ac.zw/" target="_blank"><strong>NUST</strong></a> - <a
+                        class="text-muted" href="https://nust.ac.zw/" target="_blank"><strong>Tech
+                            Innovation</strong></a> &copy;2024
+                </p>
+            </div>
+            <div class="col-6 text-end">
+                <ul class="list-inline">
+                    <li class="list-inline-item">
+                        <a class="text-muted" href="https://nust.ac.zw/" target="_blank">Support</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="text-muted" href="https://nust.ac.zw/" target="_blank">Help Center</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="text-muted" href="https://nust.ac.zw/" target="_blank">Privacy</a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a class="text-muted" href="https://nust.ac.zw/" target="_blank">Terms</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <!-- <script src="/js/app.js"></script> -->
+        <script>
+            const theme = {
+                "primary": "#3B7DDD",
+                "secondary": "#6c757d",
+                "success": "#1cbb8c",
+                "info": "#17a2b8",
+                "warning": "#fcb92c",
+                "danger": "#dc3545",
+                "white": "#fff",
+                "gray-100": "#f8f9fa",
+                "gray-200": "#e9ecef",
+                "gray-300": "#dee2e6",
+                "gray-400": "#ced4da",
+                "gray-500": "#adb5bd",
+                "gray-600": "#6c757d",
+                "gray-700": "#495057",
+                "gray-800": "#343a40",
+                "gray-900": "#212529",
+                "black": "#000"
+            };
+
+            // Add theme to the window object
+            window.theme = theme;
+        </script>
+        <script src="/js/simplebar.min.js"></script>
+
+        <script src="/js/jquery-3.6.0.js"></script>
+        <script src="/js/bootstrap.bundle.min.js"></script>
+        <script src="/js/moment.min.js"></script>
+        <script src="/js/daterangepicker.js"></script>
+        <script src="/js/datatables.min.js"></script>
+
+        <script src="/js/sweetalert2.all.min.js"></script>
+
+        <script src="/js/chart.umd.min.js"></script>
+
+        <script src="/js/feather.js"></script>
+
+
+    <script src="/js/utils.js"></script>
+    <script src="/js/formHandler.js"></script>
+    </div>
+</footer>

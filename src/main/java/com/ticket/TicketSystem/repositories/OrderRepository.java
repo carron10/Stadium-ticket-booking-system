@@ -4,12 +4,17 @@
  */
 package com.ticket.TicketSystem.repositories;
 
-import com.ticket.TicketSystem.entities.Order;
 import org.springframework.data.repository.CrudRepository;
+
+import com.ticket.TicketSystem.entities.Order;
+import org.springframework.stereotype.Repository;
+
 
 /**
  *
  * @author Carron Muleya
  */
+@Repository
 public interface OrderRepository extends CrudRepository<Order,Long> {
+    Order findByIdAndUuid(Long id,String uuid);
 }

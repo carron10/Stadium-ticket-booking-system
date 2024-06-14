@@ -11,6 +11,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import jakarta.persistence.OneToMany;
@@ -30,22 +32,27 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private String home_team;
+    @ManyToOne
+    @JoinColumn(name="home_team_id",nullable=false)
+    private Team home_team;
 
+    @ManyToOne
+    @JoinColumn(name="away_team_id",nullable=false)
+    private Team away_team;
+    
     @Column(nullable = false)
-    private String away_team;
-    private String type;
+    private String name;
     
     @Column(nullable = false)
     private Date kickoff;
 
-    private String away_team_logo;
-    private String home_team_logo;
+  
     private String feature_img;
-    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL)
+    
+    
+     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference
-    private List<Ticket> tickets;
+    private List<GameTicket> tickets;
 
     /**
      * @return the id
@@ -64,28 +71,28 @@ public class Game {
     /**
      * @return the home_team
      */
-    public String getHome_team() {
+    public Team getHome_team() {
         return home_team;
     }
 
     /**
      * @param home_team the home_team to set
      */
-    public void setHome_team(String home_team) {
+    public void setHome_team(Team home_team) {
         this.home_team = home_team;
     }
 
     /**
      * @return the away_team
      */
-    public String getAway_team() {
+    public Team getAway_team() {
         return away_team;
     }
 
     /**
      * @param away_team the away_team to set
      */
-    public void setAway_team(String away_team) {
+    public void setAway_team(Team away_team) {
         this.away_team = away_team;
     }
 
@@ -103,45 +110,19 @@ public class Game {
         this.kickoff = kickoff;
     }
 
-    /**
-     * @return the away_team_logo
-     */
-    public String getAway_team_logo() {
-        return away_team_logo;
-    }
-
-    /**
-     * @param away_team_logo the away_team_logo to set
-     */
-    public void setAway_team_logo(String away_team_logo) {
-        this.away_team_logo = away_team_logo;
-    }
-
-    /**
-     * @return the home_team_logo
-     */
-    public String getHome_team_logo() {
-        return home_team_logo;
-    }
-
-    /**
-     * @param home_team_logo the home_team_logo to set
-     */
-    public void setHome_team_logo(String home_team_logo) {
-        this.home_team_logo = home_team_logo;
-    }
+   
 
     /**
      * @return the tickets
      */
-    public List<Ticket> getTickets() {
-        return (List<Ticket>) tickets;
+    public List<GameTicket> getTickets() {
+        return (List<GameTicket>) tickets;
     }
 
     /**
      * @param tickets the tickets to set
      */
-    public void setTickets(List<Ticket> tickets) {
+    public void setTickets(List<GameTicket> tickets) {
         this.tickets = tickets;
     }
 
@@ -160,17 +141,32 @@ public class Game {
     }
 
     /**
-     * @return the type
+     * @return the name
      */
-    public String getType() {
-        return type;
+    public String getName() {
+        return name;
     }
 
     /**
-     * @param type the type to set
+     * @param name the name to set
      */
-    public void setType(String type) {
-        this.type = type;
+    public void setName(String name) {
+        this.name = name;
     }
+    
+    /**
+     * @return the name
+     */
+    public String getType() {
+        return name;
+    }
+
+    /**
+     * @param name the name to set
+     */
+    public void setType(String name) {
+        this.name = name;
+    }
+
 
 }

@@ -4,51 +4,19 @@
  */
 package com.ticket.TicketSystem.api;
 
-import com.google.zxing.WriterException;
-import com.lowagie.text.Image;
-import com.openhtmltopdf.resource.Resource;
-import com.ticket.TicketSystem.CustomElementFactoryImpl;
-import com.ticket.TicketSystem.QRCodeGenerator;
-import com.ticket.TicketSystem.SecureCodeGenerator;
-import com.ticket.TicketSystem.entities.ContactUs;
-import com.ticket.TicketSystem.entities.Game;
-import com.ticket.TicketSystem.entities.Order;
-import com.ticket.TicketSystem.entities.Ticket;
-import com.ticket.TicketSystem.repositories.ContactUsRepository;
-import com.ticket.TicketSystem.repositories.GameRepository;
-import com.ticket.TicketSystem.repositories.OrderRepository;
-import com.ticket.TicketSystem.repositories.TicketRepository;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.Valid;
 import java.io.ByteArrayOutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.nio.file.FileSystems;
-import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import static org.jsoup.nodes.Entities.EscapeMode.xhtml;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -58,24 +26,35 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
-import org.xhtmlrenderer.extend.FSImage;
-import org.xhtmlrenderer.extend.ReplacedElement;
-import org.xhtmlrenderer.extend.UserAgentCallback;
-import org.xhtmlrenderer.layout.LayoutContext;
 import org.xhtmlrenderer.layout.SharedContext;
-import org.xhtmlrenderer.pdf.ITextFSImage;
-import org.xhtmlrenderer.pdf.ITextImageElement;
 import org.xhtmlrenderer.pdf.ITextRenderer;
-import org.xhtmlrenderer.pdf.ITextUserAgent;
-import org.xhtmlrenderer.render.BlockBox;
-import zw.co.paynow.core.Payment;
-import zw.co.paynow.core.Paynow;
+
+import com.google.zxing.WriterException;
+import com.ticket.TicketSystem.CustomElementFactoryImpl;
+import com.ticket.TicketSystem.ObjectToMapConvert;
+import com.ticket.TicketSystem.PaymentService;
+import com.ticket.TicketSystem.QRCodeGenerator;
+import com.ticket.TicketSystem.SecureCodeGenerator;
+import com.ticket.TicketSystem.entities.ContactUs;
+import com.ticket.TicketSystem.entities.Game;
+import com.ticket.TicketSystem.entities.GameTicket;
+import com.ticket.TicketSystem.entities.Order;
+import com.ticket.TicketSystem.entities.PaymentResult;
+import com.ticket.TicketSystem.entities.Ticket;
+import com.ticket.TicketSystem.repositories.ContactUsRepository;
+import com.ticket.TicketSystem.repositories.GameRepository;
+import com.ticket.TicketSystem.repositories.GameTicketRepository;
+import com.ticket.TicketSystem.repositories.OrderRepository;
+import com.ticket.TicketSystem.repositories.PaymentResultsRepo;
+
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.ModelAndView;
 import zw.co.paynow.responses.StatusResponse;
-import zw.co.paynow.responses.WebInitResponse;
+import com.ticket.TicketSystem.repositories.TeamRepository;
+import com.ticket.TicketSystem.repositories.TicketRepository;
 
 /**
  *
@@ -88,11 +67,19 @@ public class ApiControllers {
     @Autowired
     ContactUsRepository contacts;
     @Autowired
-    GameRepository gameRepository;
+    GameRepository gameRepo;
     @Autowired
-    TicketRepository ticketRepo;
+    GameTicketRepository gameticketRepo;
     @Autowired
     OrderRepository orderRepo;
+    
+    @Autowired
+    PaymentResultsRepo paymentrepo;
+    
+    @Autowired
+    private ObjectToMapConvert objectToMapConvert;
+
+    
     @Autowired
     SpringTemplateEngine templateEngine;
     @Autowired
@@ -100,6 +87,9 @@ public class ApiControllers {
 
     @Autowired
     CustomElementFactoryImpl CustomElementFactoryImpl;
+    
+    @Autowired
+    PaymentService paymentService;
 
     public String getStaticResourcesFolderPath() {
         String resourcePath = "static/"; // replace with the path to your static resources folder
@@ -115,7 +105,7 @@ public class ApiControllers {
     @GetMapping("/games")
     @ResponseBody
     public Iterable<Game> getGames() {
-        return gameRepository.findAll();
+        return gameRepo.findAll();
     }
 
     @PostMapping("/qr2")
@@ -170,17 +160,31 @@ public class ApiControllers {
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(outputStream.toByteArray());
     }
 
-    @GetMapping("/tickets")
-    public Iterable<Ticket> getTickets() {
-        return ticketRepo.findAll();
+//    @GetMapping("/tickets")
+//    public Iterable<Ticket> getTickets() {
+//        return ticketRepo.findAll();
+//    }
+    
+    
+    
+    @PostMapping(value="payment/results/{order_id}/{uid}",consumes = "application/x-www-form-urlencoded;charset=UTF-8")
+    public ResponseEntity placeOrder(@PathVariable Long order_id,@PathVariable String uid,
+        @ModelAttribute PaymentResult paymentResult){
+        Order order=orderRepo.findByIdAndUuid(order_id, uid);
+        if(order!=null){
+           
+            StatusResponse status=new StatusResponse( ObjectToMapConvert.convertToMap(paymentResult));
+            order.setPaid(status.paid());
+            paymentResult.setOrder(order);
+            order.setPaymentResult(paymentResult);
+            paymentrepo.save(paymentResult);
+            orderRepo.save(order);
+            
+        }
+        return ResponseEntity.ok("Thanks");
     }
     
-    @PostMapping("payment/results/{order_id}/{uid}")
-    public ResponseEntity placeOrder(@PathVariable int order_id,@PathVariable String uid,@RequestBody String body){
-        System.out.println(body);
-        return ResponseEntity.ok("Thanks");
-        
-    }
+    
 
     @PostMapping(value = "/place_order", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseBody
@@ -189,13 +193,13 @@ public class ApiControllers {
             return ResponseEntity.badRequest().body("error no ticket specified");
         }
 
-        Ticket t = order.getTicket();
+        GameTicket t = order.getTicket();
         if (t.getQuantity() == 0) {
             return ResponseEntity.badRequest().body("No more tickets available in stock");
         }
         Game g = t.getGame();
         t.setQuantity(t.getQuantity() - 1);
-        ticketRepo.save(t);
+        gameticketRepo.save(t);
 
         String code = SecureCodeGenerator.generateSecureCode(50);
         order.setOrder_ticket_qr(code);
@@ -205,52 +209,18 @@ public class ApiControllers {
         orderRepo.save(order);
         var method = order.getPayment_method();
         //Payment
-        Paynow paynow = new Paynow("14899", "c634cc29-f807-431d-a02b-3fc534ac1921");
-        paynow.setReturnUrl("https://bfticketbokkingsystem.azurewebsites.net/payment/return/" + order.getId() + "/" + order.getUuid());
-        paynow.setResultUrl("https://bfticketbokkingsystem.azurewebsites.net/api/payment/results/" + order.getId() + "/" + order.getUuid());
-
-        Payment payment = paynow.createPayment("Invoice " + order.getId());
-
-        // Passing in the name of the item and the price of the item
-        payment.add("Tickect", t.getPrice());
-//        payment.add("Apples", 3.4);
-        //Initiating the transaction
-        WebInitResponse response = paynow.send(payment);
-        //If a mobile transaction,
-        //MobileInitResponse response = paynow.sendMobile(payment, "0771234567", MobileMoneyMethod.ECOCASH);
-
-        if (response.isRequestSuccess()) {
-            // Get the url to redirect the user to so they can make payment
-            String redirectURL = response.redirectURL();
-            // Get the poll url of the transaction
-            String pollUrl = response.pollUrl();
-
-            //checking if the payment has been paid
-            StatusResponse status = paynow.pollTransaction(pollUrl);
-
-            System.out.println(pollUrl);
-            System.out.println("Status: " + status.paid());
-
-            res.sendRedirect(redirectURL);
-            if (status.paid()) {
-                // Yay! Transaction was paid for
-            } else {
-                System.out.println("Why you no pay?");
-            }
-
-        } else {
-            // Something went wrong
-            System.out.println(response.errors());
-        }
+        
+         String redirectURL=paymentService.initPayment(order);
+         res.sendRedirect(redirectURL);
         return ResponseEntity.ok("Done");
     }
 
-    @GetMapping("/ticket")
-    public Ticket getTicketByGameAndType(@RequestParam(required = true) int game, @RequestParam(required = true) String ticket) {
-        Game g = gameRepository.findById(game);
-        Ticket t = ticketRepo.findByTypeAndGameIdIgnoreCase(ticket, g);
-        return t;
-    }
+//    @GetMapping("/ticket")
+//    public Ticket getTicketByGameAndType(@RequestParam(required = true) int game, @RequestParam(required = true) String ticket) {
+//        Game g = gameRepo.findById(game);
+//        Ticket t = gameticketRepo.findByTypeAndGameIdIgnoreCase(ticket, g);
+//        return t;
+//    }
 
     //http://localhost:8080/contact
     @PostMapping(value = "/contact", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})

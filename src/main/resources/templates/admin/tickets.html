@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <div th:replace="admin/fragments/head :: headContent"></div>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div th:replace="admin/fragments/sidebar:: sidebarContent"></div>
+
+        <div class="main">
+
+            <div th:replace="admin/fragments/navbar :: navbarContent"></div>
+
+
+            <main class="content">
+                <div class="container-fluid p-0">
+                    <div class="row">
+                        <div class="col-sm-7 mb-1 chart-container" id="drainage">
+                            <div class="card flex-fill w-100">
+                                <div class="card-header m-0 p-1">
+                                    <div class="h5 float-start">Tickets</div>
+                                </div>
+                                <div class="card-body p-0 m-0">
+                                    <table id="Tickets" class="table table-striped ">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Name</th>
+                                                <th scope="col">Price</th>
+                                                <th scope="col">Qty</th>
+                                                <th scope="col">Description</th>
+                                                <th class="no-sort" scope="col">Remove</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            <tr  th:each="ticket : ${tickets}">
+                                                <td class="type" th:text="${ticket.type}"></td>
+                                                <td class="price" th:text="${ticket.price}"></td>
+                                                <td class="quantity" th:text="${ticket.quantity}"></td>
+                                                <td class="description" th:text="${ticket.description}"></td>
+                                                <td>
+                                                    <a role="button" class="delete-ticket" th:id="${ticket.id}">
+                                                        <i data-feather="trash-2"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-5 mb-1">
+                            <div class="card rounded-0 h-100 ">
+                                <div class=" card-header text-muted border-bottom p-1">
+                                    <a class="btn w-100 " data-bs-toggle="collapse" role="button"
+                                        data-bs-target="#ticket-form" aria-expanded="false" aria-controls="ticket-form">
+                                        Add Ticket
+                                        <i class="fa fa-chevron-down"></i>
+                                    </a>
+                                </div>
+                                <div class=" card-body">
+                                    <form class="mx-1 collapse show" id="ticket-form" novalidate>
+
+                                        <div class="py-2">
+                                            <input type="text" name="type"
+                                                class="form-control-sm form-control my-1 mb-2" minlength="3"
+                                                maxlength="20" placeholder="Ticket Type" required>
+                                            <div class="invalid-feedback">Please fill out this field.</div>
+                                            <label for="type">The type/name of ticket e.g Empankweni.</label>
+                                        </div>
+                                        <div class="py-2">
+                                            <input type="number" name="price"
+                                                class="form-control-sm form-control my-1 mb-2" min="0" step="0.01"
+                                                 required placeholder="Default Price">
+                                            <label for="price">The price of a ticket, this value can be ovverided when
+                                                adding a Game</label>
+                                        </div>
+                                        <div class="py-2">
+                                            <input type="number" name="quantity"
+                                                class="form-control-sm form-control my-1 mb-2" min="1"
+                                                 required placeholder="Default Quantiry">
+                                            <label for="quantity">Total nmber of ticket which can be sold of this type. This is a default value.</label>
+                                        </div>
+                                        <textarea name="description" class=" form-control-sm form-control my-1"
+                                            placeholder="The description of the ticket type, as it will appear to the customer!!"
+                                            id="" cols="30" rows="3"></textarea>
+
+                                        <button id="send" class="btn border-primary btn-sm w-100 my-1">Add
+                                            Ticket</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+
+
+            <div th:replace="admin/fragments/footer :: footerContent"></div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $(".delete-ticket").click(function (e) {
+                var ticket_id = $(this).attr("id");
+                send(`api/tickets/${ticket_id}`, {}, "DELETE").done(function (data) {
+                    Success(data.message, "DONE!!")
+                    reloadPage(500)
+                }).fail(function (err, d) {
+                    error(`${err.responseJSON.message}`, err.statusText)
+                })
+            })
+        })
+        $(function () {
+            var table = $('#Tickets').DataTable({
+                paging: false
+            });
+            table.destroy();
+            $('#Tickets').dataTable({
+                "columnDefs": [{
+                    "targets": 'no-sort',
+                    "orderable": false
+                }],
+                responsive: true,
+                dom: 'lrtip',
+                "paging": false,
+                "info": false,
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search..."
+                }
+            });
+
+            $('#ticket-form').submit(function (e) {
+                e.preventDefault();
+                e.stopPropagation();
+                if (this.checkValidity() === true) {
+                    var btn = $(this).find("#send"),
+                        btntext = btn.html();
+                    btn.prop('disabled', true);
+                    btn.html(
+                        " <span class=\"spinner-grow spinner-grow-sm\" id=\"loader\" role=\"status\" aria-hidden=\"true\"></span>Sending...."
+                    );
+                    var formData = getFormData('ticket-form');
+                    $.ajax('api/tickets', {
+                        data: JSON.stringify(formData),
+                        method: "Post",
+                        contentType: "application/json",
+                    }).done(function (d) {
+                        btn.prop('disabled', false);
+                        btn.html(btntext);
+                        notify("Ticket have been successfully Saved", "Alert");
+                        reloadPage(500);
+                    }).fail(function (data) {
+                        btn.prop('disabled', false);
+                        btn.html(btntext);
+                        var d = JSON.parse(data.responseText);
+                        error(d.message, data.statusText);
+                    });
+                }
+                $(this).addClass("was-validated");
+            });
+        });
+    </script>
+</body>
+
+</html>

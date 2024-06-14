@@ -7,14 +7,17 @@ package com.ticket.TicketSystem.repositories;
 import com.ticket.TicketSystem.entities.Game;
 import java.util.List;
 import org.springframework.data.domain.Limit;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Carron Muleya
  */
-public interface GameRepository extends CrudRepository<Game,Long> {
+@Repository
+public interface GameRepository extends JpaRepository<Game,Long> {
 
-    public Game findById(int game);
+    public Game findById(int id);
     public List<Game> findByOrderByKickoffDesc(Limit limit);
 }

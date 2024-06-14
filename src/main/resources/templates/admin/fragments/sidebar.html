@@ -1,0 +1,58 @@
+<div th:fragment="sidebarContent">
+    <style>
+        :root {
+            --primary-color: #dcebe5;
+            --secondary-color: #9fadad;
+        }
+
+        .sidebar * {
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0;
+            z-index: 1020;
+        }
+
+        #sidebar,
+        .sidebar,
+        .sidebar-content,
+        .sidebar-nav {
+            background: white
+        }
+    </style>
+    <nav id="sidebar" class="sidebar js-sidebar border-end sticky-top">
+        <div class="sidebar-content js-simplebar" style="display:flex !important;">
+            <a class="sidebar-brand bg-primary-2  text-white"
+                style="text-decoration:none; padding-top: .85rem; padding-bottom: .75rem;" href="/admin/">
+                <span class="align-middle">BarbourFieldStadium</span>
+            </a>
+
+            <ul class="sidebar-nav">
+
+
+                <li class="sidebar-item  border-bottom">
+                    <a class="sidebar-link" href="/admin/">
+                        <i class="align-middle" data-feather="sliders"></i> <span class="align-middle">Dashboard</span>
+                    </a>
+                </li>
+
+                
+                <li class="sidebar-item border-bottom">
+                    <a class="sidebar-link" href="/admin/games">
+                        <i class="align-middle" data-feather="aperture"></i> <span class="align-middle">Games</span>
+                    </a>
+                </li>
+                <li class="sidebar-item border-bottom">
+                    <a class="sidebar-link" href="/admin/teams">
+                        <i class="align-middle" data-feather="users"></i> <span class="align-middle">Teams</span>
+                    </a>
+                </li>
+                <li class="sidebar-item border-bottom">
+                    <a class="sidebar-link" href="/admin/tickets">
+                        <i class="align-middle" data-feather="key"></i> <span class="align-middle">Tickets</span>
+                    </a>
+                </li>
+            </ul>
+
+        </div>
+    </nav>
+</div>

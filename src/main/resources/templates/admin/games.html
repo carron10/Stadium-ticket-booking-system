@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    
+<div th:replace="admin/fragments/head :: headContent"></div>
+</head>
+
+<body>
+    <div class="wrapper">
+        <div th:replace="admin/fragments/sidebar:: sidebarContent"></div>
+
+        <div class="main">
+
+            <div th:replace="admin/fragments/navbar :: navbarContent"></div>
+
+
+            <main class="content">
+                <div class="container-fluid p-0">
+                    <div class="d-flex justify-content-between mb-2">
+                        <div>
+                            <h1 class="h3 text-primary">Games</h1>
+                        </div>
+                        <a href="/admin/new_game" class="btn btn-sm btn-primary ">Add New Game</a>
+                    </div>
+
+                    <div class="tab-pane fade show active py-2 px-1" style="background-color: rgba(255, 255, 255, 0.8);"
+                        id="user-accounts" role="tabpanel" titleledby="general1-list">
+
+                        <table class="table table-striped" id="games-table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">ID</th>
+                                    <th scope="col">Home</th>
+                                    <th scope="col">Away</th>
+                                    <th scope="col">Type</th>
+                                    <th scope="col">Date</th>
+                                    <th scope="col">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                        
+                                <tr th:each="game : ${games}" th:id="${game.id}">
+                                    <td th:text="${game.id}"></td>
+                                    <!-- Accessing nested properties of home_team and away_team -->
+                                    <td th:text="${game.home_team.name}"></td>
+                                    <td th:text="${game.away_team.name}"></td>
+                                    <td th:text="${game.name}"></td>
+                                    <!-- Formatting the date using Thymeleaf's #dates utility -->
+                                    <td th:text="${#dates.format(game.kickoff, 'yyyy-MM-dd HH:mm')}"></td>
+                                    <td>
+                                        <a role="button" class="delete-game" th:id="${game.id}">
+                                            <i data-feather="trash-2"></i>
+                                        </a>
+                                        <a th:href="${'/admin/game?id='+game.id}"> <i data-feather="external-link"></i></a>
+                                    </td>
+                                </tr>
+                            
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </main>
+
+            
+<div th:replace="admin/fragments/footer :: footerContent"></div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+
+
+        $(function () {
+            new DataTable('#games-table');
+            $(".delete-game").click(function (e) {
+                var team_id = $(this).attr("id");
+                send(`api/games/${team_id}`, {}, "DELETE").done(function (data) {
+                    Success(data.message, "DONE!!")
+                    reloadPage(500)
+                }).fail(function (err, d) {
+                    error(`${err.responseJSON.message}`, err.statusText)
+                })
+            })
+        })
+        
+    </script>
+
+</body>
+
+</html>

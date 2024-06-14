@@ -6,11 +6,13 @@ package com.ticket.TicketSystem.repositories;
 
 import com.ticket.TicketSystem.entities.ContactUs;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 /**
  *
  * @author Carron Muleya
  */
+@Repository
 public interface ContactUsRepository extends CrudRepository<ContactUs,Long> {
     
 }

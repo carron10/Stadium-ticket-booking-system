@@ -10,9 +10,9 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
             </goals>
             <properties>
-                <exec.vmArgs></exec.vmArgs>
+                <exec.vmArgs>-Dspring.profiles.active=dev</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>-Dspring.profiles.active=dev</exec.appArgs>
                 <exec.mainClass>com.ticket.TicketSystem.TicketSystemApplication</exec.mainClass>
                 <exec.executable>java</exec.executable>
             </properties>
@@ -27,9 +27,9 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
             </goals>
             <properties>
-                <exec.vmArgs>-agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
+                <exec.vmArgs>-Dspring.profiles.active=dev -agentlib:jdwp=transport=dt_socket,server=n,address=${jpda.address}</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>-Dspring.profiles.active=dev</exec.appArgs>
                 <exec.mainClass>com.ticket.TicketSystem.TicketSystemApplication</exec.mainClass>
                 <exec.executable>java</exec.executable>
                 <jpda.listen>true</jpda.listen>
@@ -45,11 +45,75 @@
                 <goal>org.codehaus.mojo:exec-maven-plugin:3.1.0:exec</goal>
             </goals>
             <properties>
-                <exec.vmArgs></exec.vmArgs>
+                <exec.vmArgs>-Dspring.profiles.active=dev</exec.vmArgs>
                 <exec.args>${exec.vmArgs} -classpath %classpath ${exec.mainClass} ${exec.appArgs}</exec.args>
                 <exec.mainClass>com.ticket.TicketSystem.TicketSystemApplication</exec.mainClass>
                 <exec.executable>java</exec.executable>
-                <exec.appArgs></exec.appArgs>
+                <exec.appArgs>-Dspring.profiles.active=dev</exec.appArgs>
+            </properties>
+        </action>
+        <action>
+            <actionName>rebuild</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+                <goal>install</goal>
+                <goal>-Dspring.profiles.active=dev</goal>
+            </goals>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </action>
+        <action>
+            <actionName>build</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>install</goal>
+                <goal>-Dspring.profiles.active=dev</goal>
+            </goals>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </action>
+        <action>
+            <actionName>test</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>test</goal>
+                <goal>-Dspring.profiles.active=dev</goal>
+            </goals>
+        </action>
+        <action>
+            <actionName>clean</actionName>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>clean</goal>
+                <goal>-Dspring.profiles.active=dev</goal>
+            </goals>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
+            </properties>
+        </action>
+        <action>
+            <actionName>build-with-dependencies</actionName>
+            <reactor>also-make</reactor>
+            <packagings>
+                <packaging>*</packaging>
+            </packagings>
+            <goals>
+                <goal>install</goal>
+                <goal>-Dspring.profiles.active=dev</goal>
+            </goals>
+            <properties>
+                <spring.profiles.active>dev</spring.profiles.active>
             </properties>
         </action>
     </actions>
