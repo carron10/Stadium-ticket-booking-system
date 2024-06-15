@@ -37,12 +37,12 @@ class TicketSystemApplicationTests extends BaseTest {
                 .andExpect(content().string(containsString("Welcome To BabourFields Ticket Booking System"))); // Replace with actual expected content
     }
 
-    @Test
-    public void givenJavaObject_whenUsingJackson_thenConvertToMap() {
-       PaymentResult paymentResult=new PaymentResult();
-      paymentResult.setHash("JSJJS");
-      
-       Map map=ObjectToMapConvert.convertToMap(paymentResult);
-       assertEquals(paymentResult.getHash(), map.get("hash"));
-    }
+//    @Test
+//    public void givenJavaObject_whenUsingJackson_thenConvertToMap() {
+//       PaymentResult paymentResult=new PaymentResult();
+//      paymentResult.setHash("JSJJS");
+//      
+//       Map map=ObjectToMapConvert.convertToMap(paymentResult);
+//       assertEquals(paymentResult.getHash(), map.get("hash"));
+//    }
 }

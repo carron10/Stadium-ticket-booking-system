@@ -20,7 +20,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.test.context.ActiveProfiles;
 
-@ActiveProfiles("dev")
+@ActiveProfiles("test")
 class EmailServiceTest extends BaseTest {
 
     @Autowired
@@ -59,7 +59,7 @@ class EmailServiceTest extends BaseTest {
     @Test
     void testActiveProfile() {
         String[] activeProfiles = env.getActiveProfiles();
-        assertThat(activeProfiles).contains("dev");
+        assertThat(activeProfiles).contains("test");
     }
     @Test
     public void testSendSimpleEmail()

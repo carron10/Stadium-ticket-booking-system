@@ -14,5 +14,5 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface ContactUsRepository extends CrudRepository<ContactUs,Long> {
-    
+  
 }

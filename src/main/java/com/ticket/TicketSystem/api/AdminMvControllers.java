@@ -23,6 +23,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.ticket.TicketSystem.repositories.TeamRepository;
 import com.ticket.TicketSystem.repositories.TicketRepository;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Optional;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,15 +51,20 @@ public class AdminMvControllers {
     PaymentService paymentService;
 
     @GetMapping({"", "/"})
-    public ModelAndView index(HttpServletResponse res) throws IOException {
+    public String index(HttpServletResponse res, HttpServletRequest request) throws IOException {
+        
+        if (request.getRequestURI().equals("/admin")) {
+            return "redirect:/admin/"; 
+        }
         ModelAndView book = new ModelAndView();
         Iterable<Game> games = gameRepo.findByOrderByKickoffDesc(Limit.of(3));
         book.addObject("games", games);
         book.setViewName("admin/index");
-        return book;
+        return "admin/index";
     }
 
     @GetMapping("/games")
+
     public ModelAndView games(HttpServletResponse res) throws IOException {
         ModelAndView book = new ModelAndView();
         Iterable<Game> games = gameRepo.findAll();

@@ -18,8 +18,7 @@
         <java.version>17</java.version>
     </properties>
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/zw.co.paynow/java-sdk -->
-
+      
 
         <!-- https://mvnrepository.com/artifact/com.itextpdf/kernel -->
         <dependency>
@@ -47,7 +46,12 @@
             <version>2.0.0</version>
             <scope>test</scope>
         </dependency>
-
+        <!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+            <version>6.1.9</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

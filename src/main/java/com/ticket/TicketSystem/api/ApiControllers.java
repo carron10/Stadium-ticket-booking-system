@@ -4,6 +4,7 @@
  */
 package com.ticket.TicketSystem.api;
 
+import com.ticket.TicketSystem.AppUtils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.FileSystems;
@@ -33,28 +34,34 @@ import org.xhtmlrenderer.pdf.ITextRenderer;
 
 import com.google.zxing.WriterException;
 import com.ticket.TicketSystem.CustomElementFactoryImpl;
-import com.ticket.TicketSystem.ObjectToMapConvert;
 import com.ticket.TicketSystem.PaymentService;
 import com.ticket.TicketSystem.QRCodeGenerator;
 import com.ticket.TicketSystem.SecureCodeGenerator;
 import com.ticket.TicketSystem.entities.ContactUs;
+import com.ticket.TicketSystem.entities.EmailDetails;
 import com.ticket.TicketSystem.entities.Game;
 import com.ticket.TicketSystem.entities.GameTicket;
 import com.ticket.TicketSystem.entities.Order;
 import com.ticket.TicketSystem.entities.PaymentResult;
 import com.ticket.TicketSystem.entities.Ticket;
+import com.ticket.TicketSystem.mail.EmailServiceImpl;
 import com.ticket.TicketSystem.repositories.ContactUsRepository;
 import com.ticket.TicketSystem.repositories.GameRepository;
 import com.ticket.TicketSystem.repositories.GameTicketRepository;
 import com.ticket.TicketSystem.repositories.OrderRepository;
 import com.ticket.TicketSystem.repositories.PaymentResultsRepo;
-
+import com.ticket.TicketSystem.AppUtils;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.ModelAndView;
 import zw.co.paynow.responses.StatusResponse;
 import com.ticket.TicketSystem.repositories.TeamRepository;
 import com.ticket.TicketSystem.repositories.TicketRepository;
+import jakarta.mail.MessagingException;
+import java.util.Base64;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Value;
+import org.w3c.dom.Element;
 
 /**
  *
@@ -64,32 +71,44 @@ import com.ticket.TicketSystem.repositories.TicketRepository;
 @RequestMapping("/api")
 public class ApiControllers {
 
+
+
     @Autowired
-    ContactUsRepository contacts;
+    AppUtils utils;
+
     @Autowired
     GameRepository gameRepo;
     @Autowired
     GameTicketRepository gameticketRepo;
     @Autowired
     OrderRepository orderRepo;
-    
+
     @Autowired
     PaymentResultsRepo paymentrepo;
-    
-    @Autowired
-    private ObjectToMapConvert objectToMapConvert;
 
-    
+//    @Autowired
+//    private ObjectToMapConvert objectToMapConvert;
+
+    @Autowired
+    ContactUsRepository contacts;
+        
     @Autowired
     SpringTemplateEngine templateEngine;
+
+    @Autowired
+    EmailServiceImpl emailService;
+
     @Autowired
     private ResourceLoader resourceLoader;
 
     @Autowired
     CustomElementFactoryImpl CustomElementFactoryImpl;
-    
+
     @Autowired
     PaymentService paymentService;
+
+    @Value("${paynow.return.domain_url}")
+    String domain;
 
     public String getStaticResourcesFolderPath() {
         String resourcePath = "static/"; // replace with the path to your static resources folder
@@ -132,31 +151,10 @@ public class ApiControllers {
         return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(qrCodeBytes);
     }
 
-    @GetMapping("/pdf")
+    @GetMapping("/ticket_pdf/{order_id}/{uuid}")
     @ResponseBody
-    public ResponseEntity getPdf() throws WriterException, IOException {
-//        byte[] qrCodeBytes=QRCodeGenerator.generateQRCode(body, 250);
-        System.out.println(getStaticResourcesFolderPath() + "\\file");
-
-        Context myContext = new Context();
-
-//        myContext.setVariables();
-        String htmlTemplate = templateEngine.process("ticket", myContext);
-        Document document = Jsoup.parse(htmlTemplate, "UTF-8");
-        document.outputSettings().syntax(Document.OutputSettings.Syntax.xml);
-
-        String baseUrl = FileSystems.getDefault().getPath(getStaticResourcesFolderPath() + "\\file").toUri().toURL().toString();
-        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-
-        ITextRenderer renderer = new ITextRenderer();
-
-        SharedContext sharedContext = renderer.getSharedContext();
-        sharedContext.setReplacedElementFactory(CustomElementFactoryImpl);
-        sharedContext.setPrint(true);
-        sharedContext.setInteractive(false);
-        renderer.setDocumentFromString(document.toString(), "classpath:/static/");
-        renderer.layout();
-        renderer.createPDF(outputStream);
+    public ResponseEntity getPdf(@PathVariable Long order_id, @PathVariable String uuid) throws WriterException, IOException {
+        var outputStream = utils.getTicketPdf(order_id, uuid);
         return ResponseEntity.ok().contentType(MediaType.APPLICATION_PDF).body(outputStream.toByteArray());
     }
 
@@ -164,31 +162,53 @@ public class ApiControllers {
 //    public Iterable<Ticket> getTickets() {
 //        return ticketRepo.findAll();
 //    }
-    
-    
-    
-    @PostMapping(value="payment/results/{order_id}/{uid}",consumes = "application/x-www-form-urlencoded;charset=UTF-8")
-    public ResponseEntity placeOrder(@PathVariable Long order_id,@PathVariable String uid,
-        @ModelAttribute PaymentResult paymentResult){
-        Order order=orderRepo.findByIdAndUuid(order_id, uid);
-        if(order!=null){
-           
-            StatusResponse status=new StatusResponse( ObjectToMapConvert.convertToMap(paymentResult));
-            order.setPaid(status.paid());
+    @PostMapping(value = "payment/results/{order_id}/{uid}", consumes = {"application/x-www-form-urlencoded;charset=UTF-8", "application/x-www-form-urlencoded"})
+    public ResponseEntity orderResults(@PathVariable Long order_id, @PathVariable String uid,
+            @ModelAttribute PaymentResult paymentResult) throws WriterException, IOException, MessagingException {
+        Order order = orderRepo.findByIdAndUuid(order_id, uid);
+        if (order != null) {
+            order.setPaid(paymentResult.isPaid());
+            if (paymentResult.isPaid()) {
+                GameTicket t=order.getTicket();
+                t.setQuantity(t.getQuantity() - 1);
+                gameticketRepo.save(t);
+                ByteArrayOutputStream outputStream = utils.getTicketPdf(order_id, uid);
+                emailService.sendEmailWithAttachmentFromByteArray(order.getEmail_address(),
+                        "Bf Stadium ticket", "Please be advised that your ticket have been generated!",
+                        outputStream, "Ticket_number_" + order.getId() + ".pdf");
+            }
+            PaymentResult order_results = order.getPaymentResult();
+            if (order_results != null) {
+                paymentResult.setId(order_results.getId());
+            }
             paymentResult.setOrder(order);
             order.setPaymentResult(paymentResult);
             paymentrepo.save(paymentResult);
             orderRepo.save(order);
-            
+
+        } else {
+            return ResponseEntity.ok("Order not found");
         }
         return ResponseEntity.ok("Thanks");
     }
-    
-    
+
+    @GetMapping("/qr/{order_id}/{uid}")
+    @ResponseBody
+    public ResponseEntity<byte[]> getTicketQR3(@PathVariable Long order_id, @PathVariable String uid) throws WriterException, IOException {
+        Order order = orderRepo.findByIdAndUuid(order_id, uid);
+        if (order != null) {
+
+            byte[] qrCodeBytes = QRCodeGenerator.generateQRCode(order.getOrder_ticket_qr(), 250);
+
+            return ResponseEntity.ok().contentType(MediaType.IMAGE_PNG).body(qrCodeBytes);
+        }
+        return ResponseEntity.notFound().build();
+    }
 
     @PostMapping(value = "/place_order", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseBody
     public ResponseEntity placeOrder(@ModelAttribute @Valid Order order, HttpServletResponse res) throws WriterException, IOException {
+        
         if (order.getTicket() == null) {
             return ResponseEntity.badRequest().body("error no ticket specified");
         }
@@ -197,21 +217,22 @@ public class ApiControllers {
         if (t.getQuantity() == 0) {
             return ResponseEntity.badRequest().body("No more tickets available in stock");
         }
-        Game g = t.getGame();
-        t.setQuantity(t.getQuantity() - 1);
-        gameticketRepo.save(t);
-
+        List<Order> orders=orderRepo.findByEmailAndGame(order.getEmail_address(),t.getGame().getId());
+        if(orders.size()>=5){
+             return ResponseEntity.badRequest().body("You have reached the maximum limit of purcasing order");
+        }
         String code = SecureCodeGenerator.generateSecureCode(50);
         order.setOrder_ticket_qr(code);
-        
+
         order.setUuid(UUID.randomUUID().toString());
-        
+
         orderRepo.save(order);
         var method = order.getPayment_method();
         //Payment
-        
-         String redirectURL=paymentService.initPayment(order);
-         res.sendRedirect(redirectURL);
+
+        String redirectURL = paymentService.initPayment(order);
+
+        res.sendRedirect(redirectURL);
         return ResponseEntity.ok("Done");
     }
 
@@ -221,7 +242,6 @@ public class ApiControllers {
 //        Ticket t = gameticketRepo.findByTypeAndGameIdIgnoreCase(ticket, g);
 //        return t;
 //    }
-
     //http://localhost:8080/contact
     @PostMapping(value = "/contact", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE})
     @ResponseBody

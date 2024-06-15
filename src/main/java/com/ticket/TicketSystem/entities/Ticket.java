@@ -36,6 +36,9 @@ public class Ticket {
     
     private String description;
     
+    @OneToMany(mappedBy = "ticket")
+    @JsonManagedReference
+    private List<GameTicket> gameTickets;
 
     //The type of ticket
     @Column(unique=true)

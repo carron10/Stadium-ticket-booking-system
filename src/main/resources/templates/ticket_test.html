@@ -2,7 +2,7 @@
 <html>
 
 <head>
-  <title>BABOUR FIELD STADIUM</title>
+  <title>TODO supply a title</title>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- <link rel="stylesheet" href="/css/bootstrap.css" /> -->
@@ -225,10 +225,6 @@
     .mx-5 {
       margin-left: 48px !important;
     }
-    .ml-2,
-    .mx-2 {
-      margin-left: 20px !important;
-    }
 
     .c2:after {
       content: "";
@@ -278,26 +274,6 @@
       padding-left: 1rem !important;
     }
 
-    .btn-like {
-      display: inline-block;
-      font-weight: 400;
-      line-height: 1.5;
-      color: #ffffff;
-      text-align: center;
-      text-decoration: none;
-      vertical-align: middle;
-      cursor: pointer;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-      user-select: none;
-      background-color: green;
-      border: 1px solid transparent;
-      padding: .375rem .75rem;
-      font-size: 1rem;
-      border-radius: .25rem;
-      transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
-    }
-
     .away_team,
     .home_team {
       color: green;
@@ -308,17 +284,6 @@
 </head>
 
 <body>
-  <div class="py-2" style="text-align: center; width: 100%;">
-    <a class="btn-like mx-2" href="/">
-      Back Home
-    </a>
-    <a class="btn-like mx-2" th:href="${'/payment/return/'+order_id+'/'+uuid}">
-      Go Back
-    </a>
-    <a class="btn-like mx-2" th:href="${'/api/ticket_pdf/'+order_id+'/'+uuid}">
-      Download
-    </a>
-  </div>
   <div class=" container my-4 full-background-image">
     <div class="margin-bottom:30px !important"></div>
     <!-- <div class="d-flex justify-content-between"> -->
@@ -328,53 +293,34 @@
       </div>
 
       <div class=" float-right">
-        <div style="padding-top: 30.4px !important;  margin-right:100px; margin-top:20px">
-          <span class="big-green-text text-uppercase">
-            <span th:text="${order.getTicket().getTicket().getType()}"> </span> NO: #
-            <span th:text="${order.getId()}"></span>
-          </span>
-        </div>
-        <div class="pt-2" style=" margin-right:100px; margin-top:30px"><span class="game-type text-uppercase"
-            th:text="${game.getType()}"></span> <span class="game-text text-white">GAME</span></div>
+        <div style="padding-top: 30.4px !important;  margin-right:100px; margin-top:20px"><span
+            class="big-green-text">SOWETO TICKET NO:01</span></div>
+        <div class="pt-2" style=" margin-right:100px; margin-top:30px"><span class="game-type ">PSL</span> <span
+            class="game-text text-white">GAME</span></div>
       </div>
     </div>
     <div></div>
     <div class="text-center text-uppercase border-top mt-1">
       <div style="margin-top:50px"><span class="stadium">BABOUR FIELD STADIUM</span></div>
       <div class="pt-5 mb-4">
-        <span class="match-date text-white mt-2" th:text="${#dates.format(game.kickoff, 'yyyy-MM-dd HH:mm')}">
-
-        </span>
+        <span class="match-date text-white mt-2">SUNDAY,JUNE 7th</span>
       </div>
-      <div class="kickoff-time text-white">Kickoff at <span th:text="${#dates.format(game.kickoff, 'HH:mm')}"></span>
-      </div>
+      <div class="kickoff-time text-white">Kickoff at 3 PM</div>
       <div class=" text-center">
         <hr class="l-2">
       </div>
     </div>
-    <div class="text-center " style="padding-top: 40px;">
-      <!-- <span class="home_team">Highlanders</span> vs <span class="away_team">ChickenInn fc</span> -->
-      <h4>
-        <p>
-          <a class="product-featured-title" href="!#">
-            <span class="h6 home_team" th:text="${game.getHome_team().name}">..</span> VS
-            <span class="h6 away_team" th:text="${game.getAway_team().name}">..</span>
-          </a>
-        </p>
-      </h4>
+    <div class="text-uppercase text-center " style="padding-top: 40px;">
+      <span class="home_team">Highlanders</span> vs <span class="away_team">ChickenInn fc</span>
     </div>
     <!-- <img src="/images/gme.jpeg" alt="" srcset="/" /> -->
     <div class=" text-right border border"
       style="margin-top:40px;margin-bottom:40px;; background-color:white; border-color: #239933 !important;">
-      <img style="margin-right:150px; margin-top:25px;" width="250" height="250"
-        th:src="${'/api/qr/'+order_id+'/'+uuid}" alt="Order QR">
+      <img style="margin-right:150px; margin-top:25px;" src="/img/qr.png" width="250" height="250" alt="" />
     </div>
     <div style=" margin-top:20px">
       <div class=" text-right   mt-4">
-        <a class="bg-white pt-3 pb-2  pr-5" style="padding-left: 76.8px !important;"
-          th:href="${@environment.getProperty('paynow.return.domain_url')}"
-          th:text="${@environment.getProperty('paynow.return.domain_url')}">
-        </a>
+        <a class="bg-white pt-3 pb-2  pr-5" style="padding-left: 76.8px !important;" href="/">http://hello.world.com/</a>
       </div>
     </div>
 

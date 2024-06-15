@@ -101,4 +101,21 @@ public class PaymentResult {
     public void setOrder(Order order) {
         this.order = order;
     }
+    public boolean isPaid(){
+        return "Paid".equals(this.getStatus());
+    }
+
+    /**
+     * @return the id
+     */
+    public Long getId() {
+        return id;
+    }
+
+    /**
+     * @param id the id to set
+     */
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

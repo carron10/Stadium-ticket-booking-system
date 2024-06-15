@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 public interface TicketRepository extends CrudRepository<Ticket, Long> {
   
     public Ticket findByType(String type);
+    
 //    @Query("SELECT t FROM Ticket t WHERE LOWER(t.type)=LOWER(:type) AND game=:game")
 //    public Ticket findByTypeAndGameIdIgnoreCase(@Param("type") String type,@Param("game") Game game);
 }

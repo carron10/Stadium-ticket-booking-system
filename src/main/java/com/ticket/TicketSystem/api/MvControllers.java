@@ -4,6 +4,8 @@
  */
 package com.ticket.TicketSystem.api;
 
+import com.google.zxing.WriterException;
+import com.ticket.TicketSystem.AppUtils;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +22,15 @@ import com.ticket.TicketSystem.entities.Game;
 import com.ticket.TicketSystem.entities.GameTicket;
 import com.ticket.TicketSystem.entities.Order;
 import com.ticket.TicketSystem.entities.Ticket;
+import com.ticket.TicketSystem.mail.EmailServiceImpl;
 import com.ticket.TicketSystem.repositories.GameRepository;
 import com.ticket.TicketSystem.repositories.GameTicketRepository;
 import com.ticket.TicketSystem.repositories.OrderRepository;
 
 import jakarta.servlet.http.HttpServletResponse;
 import com.ticket.TicketSystem.repositories.TicketRepository;
+import jakarta.mail.MessagingException;
+import java.io.ByteArrayOutputStream;
 import java.util.Iterator;
 import java.util.List;
 
@@ -40,6 +45,8 @@ public class MvControllers {
     GameRepository gameRepo;
     @Autowired
     GameTicketRepository gameticketsRepo;
+    @Autowired
+    AppUtils utils;
 
     @Autowired
     OrderRepository orderRepo;
@@ -47,14 +54,25 @@ public class MvControllers {
     @Autowired
     PaymentService paymentService;
 
+    @Autowired
+    EmailServiceImpl emailService;
+
     @GetMapping("/book")
     public ModelAndView BookTicket(@RequestParam(required = true) int game, HttpServletResponse res) throws IOException {
         ModelAndView book = new ModelAndView();
         Game g = gameRepo.findById(game);
         if (g == null) {
-            res.sendRedirect("/games.html");
+            res.sendRedirect("/games");
             return null;
         }
+//        for (GameTicket ticket : g.getTickets()) {
+//            for (Order order : orderRepo.findByTicketAndGame(ticket.getId(), g.getId())) {
+//                if (order.isPaid()) {
+//                    ticket.setQuantity(ticket.getQuantity() - 1);
+//                }
+//            }
+//        }
+
         book.addObject("game", g);
         book.setViewName("book");
         return book;
@@ -79,25 +97,67 @@ public class MvControllers {
     public ModelAndView afterPayment(@PathVariable Long order_id, @PathVariable String uuid) {
         Order order = orderRepo.findByIdAndUuid(order_id, uuid);
         ModelAndView m = new ModelAndView();
+
+        m.addObject("uuid", uuid);
+        m.addObject("order_id", order_id);
         if (order == null) {
+
             m.setViewName("error");
             m.addObject("errorMsg", "Sorry, the order you are looking for does not exist or cannot be processed at the moment.");
             return m;
         }
+        m.addObject("order", order);
+        m.addObject("game", order.getTicket().getGame());
         if (order.isPaid()) {
-
-            m.setViewName("ticket");
+            m.setViewName("view_ticket");
         } else {
-            String payment_url = String.format("/pay/%d/%s", order_id, uuid);
-            m.addObject("payment_url", payment_url);
-            m.setViewName("order_not_paid");
+            var paymentResult = paymentService.savePaymentResults(order, order.getPaymentResult().getPollurl());
+            if (paymentResult.isPaid()) {
+                GameTicket t = order.getTicket();
+                t.setQuantity(t.getQuantity() - 1);
+                gameticketsRepo.save(t);
+                m.setViewName("view_ticket");
+            } else {
+
+                String payment_url = String.format("/pay/%d/%s", order_id, uuid);
+                m.addObject("payment_url", payment_url);
+                m.setViewName("order_not_paid");
+            }
         }
         return m;
     }
 
-    @GetMapping("/ticket")
-    public String getTicket() {
-        return "ticket";
+    @GetMapping("/ticket/{order_id}/{uuid}")
+    public ModelAndView viewTicket(@PathVariable Long order_id, @PathVariable String uuid) throws IOException, WriterException, MessagingException {
+        Order order = orderRepo.findByIdAndUuid(order_id, uuid);
+        ModelAndView m = new ModelAndView();
+
+        m.addObject("uuid", uuid);
+        m.addObject("order_id", order_id);
+        if (order == null) {
+            m.setViewName("error");
+            m.addObject("errorMsg", "Sorry, the ticket you are looking for does not exist or cannot be processed at the moment.");
+            return m;
+        }
+        m.addObject("order", order);
+        m.addObject("game", order.getTicket().getGame());
+        if (order.isPaid()) {
+            m.setViewName("ticket");
+        } else {
+            var paymentResult = paymentService.savePaymentResults(order, uuid);
+            if (paymentResult.isPaid()) {
+                m.setViewName("ticket");
+                ByteArrayOutputStream outputStream = utils.getTicketPdf(order_id, uuid);
+                emailService.sendEmailWithAttachmentFromByteArray(order.getEmail_address(),
+                        "Bf Stadium ticket", "Please be advised that your ticket have been generated!",
+                        outputStream, "Ticket_number_" + order.getId() + ".pdf");
+            } else {
+                String payment_url = String.format("/pay/%d/%s", order_id, uuid);
+                m.addObject("payment_url", payment_url);
+                m.setViewName("order_not_paid");
+            }
+        }
+        return m;
     }
 
     @GetMapping("/")

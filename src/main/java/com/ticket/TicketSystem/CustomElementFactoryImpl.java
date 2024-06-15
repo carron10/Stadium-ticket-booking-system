@@ -4,11 +4,17 @@
  */
 package com.ticket.TicketSystem;
 
+import com.itextpdf.text.BadElementException;
 import com.lowagie.text.Image;
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URLEncoder;
+import java.util.Base64;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.PathResource;
@@ -24,6 +30,7 @@ import org.xhtmlrenderer.layout.LayoutContext;
 import org.xhtmlrenderer.pdf.ITextFSImage;
 import org.xhtmlrenderer.pdf.ITextImageElement;
 import org.xhtmlrenderer.render.BlockBox;
+import org.xhtmlrenderer.resource.ImageResource;
 import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 
 /**
@@ -33,15 +40,33 @@ import org.xhtmlrenderer.simple.extend.FormSubmissionListener;
 @Service
 public class CustomElementFactoryImpl implements ReplacedElementFactory {
 
-   @Autowired
-   ImageService imgservice;
+    @Autowired
+    ImageService imgservice;
 
     @Override
     public ReplacedElement createReplacedElement(LayoutContext lc, BlockBox box, UserAgentCallback uac, int cssWidth, int cssHeight) {
         org.w3c.dom.Element e = box.getElement();
         String nodeName = e.getNodeName();
         if (nodeName.equals("img")) {
+
             String imagePath = e.getAttribute("src");
+            if (imagePath.startsWith("data:image")) {
+                try {
+                    String base64Data = imagePath.split(",")[1];
+                    byte[] bytes = Base64.getDecoder().decode(base64Data);
+                    Image image = Image.getInstance(bytes);
+                    FSImage fsImage = new ITextFSImage(image);
+                    if (cssWidth != -1 || cssHeight != -1) {
+                        fsImage.scale(cssWidth, cssHeight);
+                    } else {
+                        fsImage.scale(2000, 1000);
+                    }
+                    return new ITextImageElement(fsImage);
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }
+
             try {
 //                Resource resource = resourceLoader.getResource("classpath:static/" + new PathResource(imagePath).getFilename());
                 InputStream input = imgservice.getImageAsStream(imagePath);

@@ -6,36 +6,94 @@ package com.ticket.TicketSystem;
 
 import com.ticket.TicketSystem.entities.GameTicket;
 import com.ticket.TicketSystem.entities.Order;
+import com.ticket.TicketSystem.entities.PaymentResult;
 import com.ticket.TicketSystem.entities.Ticket;
+import com.ticket.TicketSystem.repositories.OrderRepository;
+import com.ticket.TicketSystem.repositories.PaymentResultsRepo;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 import zw.co.paynow.core.Payment;
 import zw.co.paynow.core.Paynow;
 import zw.co.paynow.responses.StatusResponse;
 import zw.co.paynow.responses.WebInitResponse;
 
-
 @Component
 public class PaymentService {
-    
+
     @Value("${paynow.integration.id}")
     String integrationid;
-    
+
     @Value("${paynow.integration.key}")
     String integrationkey;
-    
+
     @Value("${paynow.results.domain_url}")
     String results_domain_url;
-    
+
     @Value("${paynow.return.domain_url}")
     String return_domain_url;
-    
+
+    @Autowired
+    PaymentResultsRepo paymentResultsRepo;
+
+    @Autowired
+    OrderRepository orderRepo;
+
+     public PaymentResult savePaymentResults(Order order, String pollUrl) {
+        System.out.println("Poll URL: " + pollUrl);
+        RestTemplate restTemplate = new RestTemplate();
+        String response = restTemplate.getForObject(pollUrl, String.class);
+
+        Map<String, String> responseMap = parseUrlEncodedResponse(response);
+        PaymentResult paymentResult = mapToPaymentResult(responseMap);
+
+        order.setPaid(paymentResult.isPaid());
+        paymentResult.setOrder(order);
+
+        PaymentResult existingPaymentResult = order.getPaymentResult();
+        if (existingPaymentResult != null) {
+            paymentResult.setId(existingPaymentResult.getId());
+        }
+        order.setPaymentResult(paymentResult);
+        paymentResultsRepo.save(paymentResult);
+        orderRepo.save(order);
+        return paymentResult;
+    }
+
+    private Map<String, String> parseUrlEncodedResponse(String response) {
+        Map<String, String> responseMap = new HashMap<>();
+        String[] pairs = response.split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf('=');
+            String key = URLDecoder.decode(pair.substring(0, idx), StandardCharsets.UTF_8);
+            String value = URLDecoder.decode(pair.substring(idx + 1), StandardCharsets.UTF_8);
+            responseMap.put(key, value);
+        }
+        return responseMap;
+    }
+
+    private PaymentResult mapToPaymentResult(Map<String, String> responseMap) {
+        PaymentResult paymentResult = new PaymentResult();
+        paymentResult.setReference(responseMap.get("reference"));
+        paymentResult.setPaynowreference(responseMap.get("paynowreference"));
+        paymentResult.setAmount(Float.parseFloat(responseMap.get("amount")));
+        paymentResult.setStatus(responseMap.get("status"));
+        paymentResult.setPollurl(responseMap.get("pollurl"));
+        paymentResult.setHash(responseMap.get("hash"));
+        return paymentResult;
+    }
+
     public String initPayment(Order order) {
-        GameTicket t=order.getTicket();
-        
+        GameTicket t = order.getTicket();
+
         Paynow paynow = new Paynow(integrationid, integrationkey);
-        paynow.setReturnUrl(return_domain_url+"/payment/return/" + order.getId() + "/" + order.getUuid());
-        paynow.setResultUrl(results_domain_url+"/api/payment/results/" + order.getId() + "/" + order.getUuid());
+        paynow.setReturnUrl(return_domain_url + "/payment/return/" + order.getId() + "/" + order.getUuid());
+        paynow.setResultUrl(results_domain_url + "/api/payment/results/" + order.getId() + "/" + order.getUuid());
 
         Payment payment = paynow.createPayment("Invoice " + order.getId());
 
@@ -59,12 +117,15 @@ public class PaymentService {
             System.out.println(pollUrl);
             System.out.println("Status: " + status.paid());
 
+            order.setPaid(status.paid());
+            this.savePaymentResults(order, pollUrl);
             if (status.paid()) {
                 // Yay! Transaction was paid for
             } else {
                 System.out.println("Why you no pay?");
+                return redirectURL;
             }
-            return redirectURL;
+
         } else {
             // Something went wrong
             System.out.println(response.errors());

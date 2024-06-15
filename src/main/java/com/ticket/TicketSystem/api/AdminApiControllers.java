@@ -36,7 +36,7 @@ import com.google.zxing.WriterException;
 import com.ticket.TicketSystem.CustomElementFactoryImpl;
 import com.ticket.TicketSystem.GlobalExceptionHandler;
 import com.ticket.TicketSystem.GlobalExceptionHandler.ErrorResponse;
-import com.ticket.TicketSystem.ObjectToMapConvert;
+//import com.ticket.TicketSystem.ObjectToMapConvert;
 import com.ticket.TicketSystem.PaymentService;
 import com.ticket.TicketSystem.QRCodeGenerator;
 import com.ticket.TicketSystem.entities.Game;
@@ -103,9 +103,9 @@ public class AdminApiControllers {
 
     @Autowired
     PaymentResultsRepo paymentrepo;
-
-    @Autowired
-    private ObjectToMapConvert objectToMapConvert;
+//
+//    @Autowired
+//    private ObjectToMapConvert objectToMapConvert;
 
     @Autowired
     SpringTemplateEngine templateEngine;

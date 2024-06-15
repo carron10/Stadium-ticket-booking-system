@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 import static org.springframework.security.config.Customizer.withDefaults;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -21,11 +22,19 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @EnableWebSecurity
 public class SecurityConfiguration {
 
+    private final Environment env;
+
+    public SecurityConfiguration(Environment env) {
+        this.env = env;
+    }
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf().disable();
+        if (env.acceptsProfiles("test")) {
+            http.csrf().disable();
+        } 
         http.authorizeHttpRequests(authz -> authz
-//                .requestMatchers("/admin/**").authenticated()
+                .requestMatchers("/admin/**").authenticated()
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()
                 .anyRequest().permitAll()
         )
@@ -38,9 +47,9 @@ public class SecurityConfiguration {
     @Bean
     public UserDetailsService userDetailsService() {
         UserDetails user = User.withDefaultPasswordEncoder()
-                .username("user")
-                .password("password")
-                .roles("USER")
+                .username("lucky")
+                .password("dzimbi")
+                .roles("Admin")
                 .build();
 
         return new InMemoryUserDetailsManager(user);

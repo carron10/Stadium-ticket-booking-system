@@ -1,20 +1,22 @@
 package com.ticket.TicketSystem.mail;
 
+import com.ticket.TicketSystem.entities.EmailDetails;
+import jakarta.mail.MessagingException;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
-
+import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-
-// Importing required classes
-import com.ticket.TicketSystem.entities.EmailDetails;
-
-import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
+import org.springframework.mail.MailException;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 
 // Annotation
 @Service
@@ -26,7 +28,6 @@ public class EmailServiceImpl implements EmailService {
 
     @Value("${spring.mail.username}")
     private String sender;
-    
 
     public JavaMailSender getMailSender() {
         return javaMailSender;
@@ -60,10 +61,30 @@ public class EmailServiceImpl implements EmailService {
 
     public void sendSimpleEmail(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(sender);
         message.setTo(to);
         message.setSubject(subject);
         message.setText(text);
         javaMailSender.send(message);
+    }
+
+    public void sendEmailWithAttachmentFromByteArray(String to, String subject, String text, ByteArrayOutputStream byteArrayOutputStream, String attachmentFilename) throws IOException, MessagingException {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message, true);
+        helper.setFrom(sender);
+        helper.setTo(to);
+        helper.setSubject(subject);
+        helper.setText(text);
+
+        // Convert ByteArrayOutputStream to byte array
+        byte[] bytes = byteArrayOutputStream.toByteArray();
+
+        // Add the attachment
+        ByteArrayResource dataSource = new ByteArrayResource(bytes, "application/pdf");
+        helper.addAttachment(attachmentFilename, dataSource);
+
+        javaMailSender.send(message);
+        System.out.println("Sent a new email to:" + to);
     }
 
     public String
