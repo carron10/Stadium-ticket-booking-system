@@ -30,9 +30,7 @@ public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        if (env.acceptsProfiles("test")) {
-            http.csrf().disable();
-        } 
+        http.csrf().disable();
         http.authorizeHttpRequests(authz -> authz
                 .requestMatchers("/admin/**").authenticated()
                 .requestMatchers("/css/**", "/js/**", "/images/**").permitAll()

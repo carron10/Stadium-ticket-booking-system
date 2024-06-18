@@ -113,9 +113,13 @@ public class MvControllers {
         } else {
             var paymentResult = paymentService.savePaymentResults(order, order.getPaymentResult().getPollurl());
             if (paymentResult.isPaid()) {
-                GameTicket t = order.getTicket();
+                GameTicket t=order.getTicket();
                 t.setQuantity(t.getQuantity() - 1);
-                gameticketsRepo.save(t);
+                gameticketRepo.save(t);
+                ByteArrayOutputStream outputStream = utils.getTicketPdf(order_id, uid);
+                emailService.sendEmailWithAttachmentFromByteArray(order.getEmail_address(),
+                        "Bf Stadium ticket", "Please be advised that your ticket have been generated!",
+                        outputStream, "Ticket_number_" + order.getId() + ".pdf");
                 m.setViewName("view_ticket");
             } else {
 
