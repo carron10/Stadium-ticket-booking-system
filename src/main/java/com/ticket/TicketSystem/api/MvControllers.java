@@ -94,7 +94,7 @@ public class MvControllers {
     }
 
     @GetMapping("/payment/return/{order_id}/{uuid}")
-    public ModelAndView afterPayment(@PathVariable Long order_id, @PathVariable String uuid) {
+    public ModelAndView afterPayment(@PathVariable Long order_id, @PathVariable String uuid) throws WriterException, IOException, IOException, MessagingException {
         Order order = orderRepo.findByIdAndUuid(order_id, uuid);
         ModelAndView m = new ModelAndView();
 
@@ -115,8 +115,8 @@ public class MvControllers {
             if (paymentResult.isPaid()) {
                 GameTicket t=order.getTicket();
                 t.setQuantity(t.getQuantity() - 1);
-                gameticketRepo.save(t);
-                ByteArrayOutputStream outputStream = utils.getTicketPdf(order_id, uid);
+                gameticketsRepo.save(t);
+                ByteArrayOutputStream outputStream = utils.getTicketPdf(order_id, uuid);
                 emailService.sendEmailWithAttachmentFromByteArray(order.getEmail_address(),
                         "Bf Stadium ticket", "Please be advised that your ticket have been generated!",
                         outputStream, "Ticket_number_" + order.getId() + ".pdf");
