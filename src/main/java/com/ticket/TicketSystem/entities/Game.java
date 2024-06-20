@@ -50,7 +50,7 @@ public class Game {
     private String feature_img;
     
     
-     @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference(value = "game-tickets")
     private List<GameTicket> tickets;
 

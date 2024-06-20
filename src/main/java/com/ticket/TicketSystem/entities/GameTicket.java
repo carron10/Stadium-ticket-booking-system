@@ -43,7 +43,7 @@ public class GameTicket {
     private Ticket ticket;
 
     @OneToMany(mappedBy = "ticket")
-    @JsonManagedReference
+    @JsonManagedReference(value = "game-tickets")
     private List<Order> orders;
     
     /**
