@@ -1,6 +1,6 @@
 ## TicketBookingSystem 🏟️
 A user-friendly online ticket booking system for stadium events built with SpringBoot.
-
+To view the website visit [here.](https://bfticketbookingsystem.azurewebsites.net/)
 ---
 
 ## 💻 Installation

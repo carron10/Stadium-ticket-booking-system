@@ -51,7 +51,7 @@ public class Game {
     
     
      @OneToMany(mappedBy = "game", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonManagedReference
+    @JsonManagedReference(value = "game-tickets")
     private List<GameTicket> tickets;
 
     /**

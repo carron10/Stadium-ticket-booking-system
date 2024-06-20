@@ -37,7 +37,7 @@ public class Ticket {
     private String description;
     
     @OneToMany(mappedBy = "ticket")
-    @JsonManagedReference
+    @JsonManagedReference(value = "game-tickets")
     private List<GameTicket> gameTickets;
 
     //The type of ticket
